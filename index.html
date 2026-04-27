@@ -13,92 +13,62 @@
         <div class="bg-slate-800 p-8 rounded-2xl shadow-2xl border border-slate-700 w-80 text-center">
             <i class="fas fa-mobile-alt text-5xl text-blue-500 mb-4"></i>
             <h1 class="text-2xl font-bold mb-6">Acceso al Sistema</h1>
-            <button onclick="showRole('vendedor')" class="w-full bg-green-600 p-3 rounded-lg mb-3 hover:bg-green-700 font-bold">
+            <button onclick="entrarComo('vendedor')" class="w-full bg-green-600 p-3 rounded-lg mb-3 hover:bg-green-700 font-bold transition">
                 <i class="fas fa-user-tag mr-2"></i> SOY VENDEDOR
             </button>
-            <button onclick="showRole('jefe')" class="w-full bg-blue-600 p-3 rounded-lg hover:bg-blue-700 font-bold">
+            <button onclick="entrarComo('jefe')" class="w-full bg-blue-600 p-3 rounded-lg hover:bg-blue-700 font-bold transition">
                 <i class="fas fa-user-tie mr-2"></i> SOY JEFE
             </button>
         </div>
     </div>
 
     <div id="vendedorView" class="hidden p-4 max-w-lg mx-auto">
-        <nav class="flex justify-between items-center mb-6">
-            <h2 class="text-xl font-bold text-green-400">Panel Vendedor</h2>
-            <button onclick="location.reload()" class="text-sm bg-slate-700 px-3 py-1 rounded">Salir</button>
-        </nav>
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl font-bold text-green-400">Nueva Venta</h2>
+            <button onclick="location.reload()" class="bg-slate-700 px-3 py-1 rounded text-sm">Cerrar</button>
+        </div>
         <div class="bg-white text-slate-900 p-6 rounded-xl shadow-lg">
-            <form id="formVenta" class="space-y-4">
-                <label class="block font-bold">Modelo del Equipo</label>
-                <input type="text" id="modelo" class="w-full border p-2 rounded" placeholder="Ej: iPhone 13 128GB">
-                
-                <label class="block font-bold">IMEI / Serie</label>
-                <input type="text" id="imei" class="w-full border p-2 rounded" placeholder="Número único">
-                
-                <label class="block font-bold">Precio de Venta ($)</label>
-                <input type="number" id="precio" class="w-full border p-2 rounded" placeholder="0.00">
-                
-                <button type="button" onclick="registrarVenta()" class="w-full bg-green-600 text-white p-4 rounded-xl font-bold text-lg">
-                    CONFIRMAR VENTA
+            <div class="space-y-4">
+                <div>
+                    <label class="block font-bold mb-1">Modelo</label>
+                    <input type="text" id="modelo" class="w-full border p-2 rounded shadow-sm" placeholder="Ej: iPhone 13">
+                </div>
+                <div>
+                    <label class="block font-bold mb-1">IMEI / Serie</label>
+                    <input type="text" id="imei" class="w-full border p-2 rounded shadow-sm" placeholder="15 dígitos">
+                </div>
+                <div>
+                    <label class="block font-bold mb-1">Precio de Venta ($)</label>
+                    <input type="number" id="precio" class="w-full border p-2 rounded shadow-sm" placeholder="0.00">
+                </div>
+                <button onclick="registrarVenta()" id="btnRegistrar" class="w-full bg-green-600 text-white p-4 rounded-xl font-bold text-lg hover:bg-green-700">
+                    REGISTRAR VENTA
                 </button>
-            </form>
+            </div>
         </div>
     </div>
 
     <div id="jefeView" class="hidden p-4">
-        <nav class="flex justify-between items-center mb-8 bg-slate-800 p-4 rounded-xl">
-            <h2 class="text-xl font-bold text-blue-400"><i class="fas fa-chart-line mr-2"></i>Dashboard Gerencial</h2>
-            <button onclick="location.reload()" class="bg-red-500 px-4 py-2 rounded-lg font-bold">Cerrar Sesión</button>
-        </nav>
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <div class="bg-blue-900/50 p-6 rounded-xl border border-blue-500">
-                <p class="text-blue-300 text-sm">Ventas del Mes</p>
-                <h3 class="text-3xl font-bold">$12,450</h3>
-            </div>
-            <div class="bg-green-900/50 p-6 rounded-xl border border-green-500">
-                <p class="text-green-300 text-sm">Ganancia Neta</p>
-                <h3 class="text-3xl font-bold">$3,120</h3>
-            </div>
-            <div class="bg-purple-900/50 p-6 rounded-xl border border-purple-500">
-                <p class="text-purple-300 text-sm">Equipos Vendidos</p>
-                <h3 class="text-3xl font-bold">42</h3>
-            </div>
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl font-bold text-blue-400">Panel de Control</h2>
+            <button onclick="location.reload()" class="bg-red-500 px-3 py-1 rounded text-sm font-bold">Cerrar Sesión</button>
         </div>
-
-        <div class="bg-slate-800 p-4 rounded-xl overflow-x-auto">
-            <h3 class="font-bold mb-4">Últimos Movimientos</h3>
-            <table class="w-full text-left">
-                <thead class="text-slate-400 text-sm border-b border-slate-700">
-                    <tr>
-                        <th class="pb-2">Fecha</th>
-                        <th class="pb-2">Equipo</th>
-                        <th class="pb-2">Vendedor</th>
-                        <th class="pb-2">Venta</th>
-                        <th class="pb-2 text-green-400">Ganancia</th>
-                    </tr>
-                </thead>
-                <tbody class="text-sm">
-                    <tr class="border-b border-slate-700/50">
-                        <td class="py-3">27/04</td>
-                        <td>S23 Ultra</td>
-                        <td>Juan Pérez</td>
-                        <td>$950</td>
-                        <td class="text-green-400">+$120</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="bg-slate-800 p-6 rounded-xl border border-blue-500 text-center">
+            <p>Bienvenido, Jefe. Aquí verás tus reportes pronto.</p>
         </div>
     </div>
 
     <script>
-        function showRole(role) {
+        // CONFIGURACIÓN: PEGA AQUÍ TU URL DE GOOGLE APPS SCRIPT
+        const urlScript = "https://script.google.com/macros/s/AKfycby0b7Nii52CzKkrO5C-waVIYdchxF9OmETbGC76Vrn_hU9m_AwELac_hrpg7Magk9ir/exec";
+
+        function entrarComo(rol) {
             document.getElementById('loginScreen').classList.add('hidden');
-            if(role === 'vendedor') {
+            if(rol === 'vendedor') {
                 document.getElementById('vendedorView').classList.remove('hidden');
             } else {
-                let pass = prompt("Introduce la clave de Jefe:");
-                if(pass === "1234") { // Clave temporal
+                let clave = prompt("Ingrese clave de Jefe:");
+                if(clave === "1234") {
                     document.getElementById('jefeView').classList.remove('hidden');
                 } else {
                     alert("Clave incorrecta");
@@ -107,42 +77,44 @@
             }
         }
 
-async function registrarVenta() {
-    const btn = document.querySelector('button');
-    btn.disabled = true;
-    btn.innerText = "ENVIANDO...";
+        async function registrarVenta() {
+            const modelo = document.getElementById('modelo').value;
+            const imei = document.getElementById('imei').value;
+            const precio = document.getElementById('precio').value;
 
-    const urlScript = "https://script.google.com/macros/s/AKfycby0b7Nii52CzKkrO5C-waVIYdchxF9OmETbGC76Vrn_hU9m_AwELac_hrpg7Magk9ir/exec";
+            if(!modelo || !imei || !precio) {
+                alert("Por favor rellena todos los campos");
+                return;
+            }
 
-    const datos = {
-        modelo: document.getElementById('modelo').value,
-        imei: document.getElementById('imei').value,
-        precio: document.getElementById('precio').value,
-        costo: 0, // Lo editaremos luego desde el panel de Jefe
-        vendedor: "Vendedor 1"
-    };
+            const btn = document.getElementById('btnRegistrar');
+            btn.disabled = true;
+            btn.innerText = "ENVIANDO...";
 
-    try {
-        // Usamos una técnica llamada 'fetch' para enviar los datos
-        await fetch(urlScript, {
-            method: 'POST',
-            mode: 'no-cors', // Importante para Google Scripts
-            cache: 'no-cache',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(datos)
-        });
+            const datos = {
+                modelo: modelo,
+                imei: imei,
+                precio: precio,
+                costo: 0,
+                vendedor: "Vendedor Web"
+            };
 
-        alert("✅ ¡VENTA REGISTRADA EN EL EXCEL!");
-        document.getElementById('formVenta').reset();
-    } catch (error) {
-        alert("Error al conectar: " + error);
-    } finally {
-        btn.disabled = false;
-        btn.innerText = "CONFIRMAR VENTA";
-    }
-}
-            alert("Conectando con Google Sheets... (Venta Registrada)");
-            // Aquí irá la conexión que hicimos en el paso anterior
+            try {
+                await fetch(urlScript, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: JSON.stringify(datos)
+                });
+                alert("✅ Venta registrada en Google Sheets");
+                document.getElementById('modelo').value = "";
+                document.getElementById('imei').value = "";
+                document.getElementById('precio').value = "";
+            } catch (e) {
+                alert("Error: " + e);
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "REGISTRAR VENTA";
+            }
         }
     </script>
 </body>
