@@ -19,78 +19,114 @@
     </div>
 
     <div id="vendedorView" class="hidden p-4 max-w-md mx-auto">
-        <h2 class="text-xl font-bold mb-4 text-green-400">Registrar Venta</h2>
+        <h2 class="text-xl font-bold mb-4 text-green-400 font-bold text-center">Venta Mayorista</h2>
         <div class="bg-white text-slate-900 p-4 rounded-xl space-y-4 shadow-2xl">
             <div>
-                <label class="block text-xs font-bold text-gray-500 uppercase text-left">Buscar Equipo en Stock</label>
-                <input type="text" id="busqueda" onkeyup="buscarStock()" class="w-full border-2 border-gray-200 p-2 rounded-lg focus:border-green-500 outline-none" placeholder="Escribe marca o modelo...">
-                <div id="listaSugerencias" class="bg-gray-100 mt-1 max-h-60 overflow-y-auto rounded shadow-inner"></div>
+                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Buscar Equipo en Stock</label>
+                <input type="text" id="busqueda" onkeyup="buscarStock()" class="w-full border-2 p-2 rounded-lg outline-none focus:border-green-500" placeholder="Escribe marca o modelo...">
+                <div id="listaSugerencias" class="bg-gray-100 mt-1 max-h-40 overflow-y-auto rounded shadow-inner border border-gray-200"></div>
             </div>
-            <div class="p-3 bg-blue-50 rounded-lg border border-blue-200">
-                <p id="detallesEquipo" class="text-sm italic text-gray-600 text-center">Selecciona un equipo de la lista...</p>
+            
+            <div class="p-3 bg-blue-50 rounded-lg text-center border border-blue-200">
+                <p id="detallesEquipo" class="text-xs text-gray-600 font-bold italic">Selecciona un equipo de la lista...</p>
             </div>
+
+            <div class="flex gap-2">
+                <button onclick="setMoneda('USD')" id="btnUSD" class="flex-1 p-2 rounded-lg font-bold bg-green-600 text-white border-2 border-green-700">PAGO $ USD</button>
+                <button onclick="setMoneda('BS')" id="btnBS" class="flex-1 p-2 rounded-lg font-bold bg-gray-200 text-gray-700 border-2 border-gray-300">PAGO BS.</button>
+            </div>
+
             <div>
-                <label class="block text-xs font-bold text-gray-500 uppercase text-left">Precio Venta ($)</label>
-                <input type="number" id="precioVenta" class="w-full border-2 border-gray-200 p-2 rounded-lg focus:border-green-500 outline-none" placeholder="Ej: 850">
+                <label id="labelMonto" class="block text-xs font-bold text-gray-500 uppercase mb-1 text-center">Monto a Cobrar ($)</label>
+                <input type="number" id="precioVenta" oninput="calcularTotal()" class="w-full border-2 p-3 rounded-lg text-xl font-bold text-center focus:border-blue-500 outline-none" placeholder="0.00">
             </div>
-            <div id="calcBs" class="text-right text-sm font-bold text-blue-700 bg-blue-50 p-2 rounded">Total en Bs: 0.00</div>
-            <button onclick="confirmarVenta()" id="btnVenta" class="w-full bg-green-600 text-white p-3 rounded-lg font-bold shadow-lg hover:bg-green-700">VENDER AHORA</button>
-            <button onclick="location.reload()" class="w-full text-gray-400 text-xs mt-2 uppercase font-bold tracking-widest text-center">← Volver</button>
+            
+            <div class="bg-slate-100 p-3 rounded-lg flex justify-between items-center font-bold">
+                <span class="text-xs text-gray-500 uppercase italic">Equivalente:</span>
+                <span id="labelEquivalente" class="text-blue-600 text-lg">0.00</span>
+            </div>
+
+            <button onclick="confirmarVenta()" id="btnVenta" class="w-full bg-green-600 text-white p-4 rounded-xl font-bold shadow-lg hover:bg-green-700 transition uppercase tracking-wider">Finalizar Venta</button>
+            <button onclick="location.reload()" class="w-full text-gray-400 text-xs font-bold uppercase tracking-tighter">← Volver al inicio</button>
         </div>
     </div>
 
     <div id="jefeView" class="hidden p-4 max-w-2xl mx-auto">
         <div class="flex justify-between items-center mb-6">
-            <h2 class="text-xl font-bold text-blue-400">Panel de Control</h2>
+            <h2 class="text-xl font-bold text-blue-400">Panel de Control Gerencial</h2>
             <button onclick="location.reload()" class="bg-red-500 px-3 py-1 rounded text-xs font-bold uppercase">Salir</button>
         </div>
         
-        <div class="bg-slate-800 p-4 rounded-xl border border-yellow-600/50 mb-6 shadow-lg text-left">
-            <h3 class="text-yellow-500 font-bold mb-3 underline uppercase text-xs">Tipo de Cambio (Bolivia)</h3>
+        <div class="bg-slate-800 p-4 rounded-xl border border-yellow-600/50 mb-6 shadow-lg">
+            <h3 class="text-yellow-500 font-bold mb-3 underline uppercase text-xs">Tipo de Cambio del Día</h3>
             <div class="flex gap-2">
                 <input type="number" id="nuevaTasa" class="bg-slate-700 p-2 rounded-lg w-full text-white outline-none border border-slate-600" placeholder="Ej: 12.80">
                 <button onclick="guardarTasa()" class="bg-yellow-600 px-6 rounded-lg font-bold hover:bg-yellow-700 transition">ACTUALIZAR</button>
             </div>
         </div>
 
-        <div class="bg-slate-800 p-4 rounded-xl border border-blue-500/50 shadow-lg text-left">
-            <h3 class="text-blue-400 font-bold mb-4 uppercase text-xs">Ingresar Nueva Mercadería</h3>
-            <div class="grid grid-cols-2 gap-3">
-                <input type="text" id="invMarca" class="p-2 rounded-lg bg-slate-700 border border-slate-600 text-white" placeholder="Marca (Samsung)">
-                <input type="text" id="invModelo" class="p-2 rounded-lg bg-slate-700 border border-slate-600 text-white" placeholder="Modelo (S24)">
-                <input type="text" id="invImei" class="p-2 rounded-lg bg-slate-700 border border-slate-600 text-white" placeholder="IMEI">
-                <input type="number" id="invCosto" class="p-2 rounded-lg bg-slate-700 border border-slate-600 text-white" placeholder="Costo en $">
+        <div class="bg-slate-800 p-4 rounded-xl border border-blue-500/50 shadow-lg">
+            <h3 class="text-blue-400 font-bold mb-4 uppercase text-xs">Ingreso Masivo de Mercadería</h3>
+            <div class="grid grid-cols-2 gap-3 text-slate-900">
+                <input type="text" id="invMarca" class="p-2 rounded-lg bg-white" placeholder="Marca (Samsung)">
+                <input type="text" id="invModelo" class="p-2 rounded-lg bg-white" placeholder="Modelo (S24)">
+                <input type="text" id="invImei" class="p-2 rounded-lg bg-white" placeholder="IMEI (Si es 1 equipo)">
+                <input type="number" id="invCosto" class="p-2 rounded-lg bg-white" placeholder="Costo Unit. $">
+                <div class="col-span-2">
+                    <label class="block text-blue-300 text-[10px] mb-1 font-bold">CANTIDAD DE EQUIPOS A INGRESAR</label>
+                    <input type="number" id="invCantidad" class="w-full p-2 rounded-lg bg-white font-bold" value="1">
+                </div>
             </div>
-            <button onclick="cargarInventario()" id="btnCargar" class="w-full bg-blue-600 mt-4 p-3 rounded-lg font-bold shadow-lg hover:bg-blue-700">CARGAR AL STOCK</button>
+            <button onclick="cargarInventario()" id="btnCargar" class="w-full bg-blue-600 mt-4 p-3 rounded-lg font-bold shadow-lg hover:bg-blue-700 transition">CARGAR AL STOCK</button>
         </div>
     </div>
 
     <script>
         const urlScript = "https://script.google.com/macros/s/AKfycbyTTNUAcLHY5eXS4rbwDwUj4ryhn_4kFv4kwYiU_GSoBwJ-TultYRvauZ8-Ce70ujak/exec";
         let stockReal = []; 
+        let monedaActual = 'USD';
+        window.tasaGlobal = 12.50;
 
         window.onload = async () => {
             try {
                 // Cargar Tasa
                 const resTasa = await fetch(urlScript + "?action=getTasa");
-                const tasa = await resTasa.text();
-                window.tasaGlobal = parseFloat(tasa) || 12.50;
+                const tasaText = await resTasa.text();
+                window.tasaGlobal = parseFloat(tasaText) || 12.50;
                 document.getElementById('tasaDia').innerText = "Tasa del día: 1$ = " + window.tasaGlobal + " Bs";
 
-                // Cargar Inventario Real
+                // Cargar Inventario
                 const resInv = await fetch(urlScript + "?action=getInventario");
                 stockReal = await resInv.json();
             } catch (e) {
-                document.getElementById('tasaDia').innerText = "Tasa: 12.50 Bs (Modo Offline)";
-                window.tasaGlobal = 12.50;
+                document.getElementById('tasaDia').innerText = "Modo Offline (Tasa: 12.50 Bs)";
             }
         };
+
+        function setMoneda(m) {
+            monedaActual = m;
+            document.getElementById('btnUSD').className = m === 'USD' ? 'flex-1 p-2 rounded-lg font-bold bg-green-600 text-white border-2 border-green-700' : 'flex-1 p-2 rounded-lg font-bold bg-gray-200 text-gray-700 border-2 border-gray-300';
+            document.getElementById('btnBS').className = m === 'BS' ? 'flex-1 p-2 rounded-lg font-bold bg-blue-600 text-white border-2 border-blue-700' : 'flex-1 p-2 rounded-lg font-bold bg-gray-200 text-gray-700 border-2 border-gray-300';
+            document.getElementById('labelMonto').innerText = m === 'USD' ? "Monto a Cobrar ($)" : "Monto a Cobrar (Bs)";
+            calcularTotal();
+        }
+
+        function calcularTotal() {
+            const monto = document.getElementById('precioVenta').value;
+            const label = document.getElementById('labelEquivalente');
+            if(!monto) { label.innerText = "0.00"; return; }
+            
+            if(monedaActual === 'USD') {
+                label.innerText = (monto * window.tasaGlobal).toFixed(2) + " Bs";
+            } else {
+                label.innerText = (monto / window.tasaGlobal).toFixed(2) + " $ USD";
+            }
+        }
 
         function buscarStock() {
             const busq = document.getElementById('busqueda').value.toLowerCase();
             const sugerencias = document.getElementById('listaSugerencias');
             sugerencias.innerHTML = "";
-
             if (busq.length < 1) return;
 
             const filtrados = stockReal.filter(item => 
@@ -102,210 +138,35 @@
             filtrados.forEach(item => {
                 const div = document.createElement('div');
                 div.className = "p-3 border-b hover:bg-green-100 cursor-pointer text-slate-800 text-left";
-                div.innerHTML = `
-                    <p class="font-bold">${item.marca} ${item.modelo}</p>
-                    <p class="text-xs text-gray-500">IMEI: ${item.imei}</p>
-                `;
-                div.onclick = () => seleccionar(item.modelo, item.imei, item.costo);
+                div.innerHTML = `<p class="font-bold">${item.marca} ${item.modelo}</p><p class="text-[10px] text-gray-500">IMEI: ${item.imei}</p>`;
+                div.onclick = () => {
+                    document.getElementById('detallesEquipo').innerHTML = `<b>${item.marca} ${item.modelo}</b><br>IMEI: ${item.imei}`;
+                    document.getElementById('busqueda').value = item.modelo;
+                    sugerencias.innerHTML = "";
+                    window.equipoVenta = item;
+                };
                 sugerencias.appendChild(div);
             });
-
-            if (filtrados.length === 0 && busq.length > 2) {
-                sugerencias.innerHTML = "<p class='p-3 text-red-500 text-sm'>Sin disponibilidad en stock</p>";
-            }
         }
 
-        function seleccionar(mod, im, cos) {
-            document.getElementById('detallesEquipo').innerHTML = `<b>${mod}</b><br>IMEI: ${im}`;
-            document.getElementById('busqueda').value = mod;
-            document.getElementById('listaSugerencias').innerHTML = "";
-            window.equipoVenta = { modelo: mod, imei: im, costo: cos };
-        }
-
-        document.getElementById('precioVenta').oninput = function() {
-            let totalBs = (this.value * window.tasaGlobal).toFixed(2);
-            document.getElementById('calcBs').innerText = "Total en Bs: " + totalBs;
-        };
-
-        function abrirVendedor() {
-            document.getElementById('loginScreen').classList.add('hidden');
-            document.getElementById('vendedorView').classList.remove('hidden');
-        }
-
-        function abrirJefe() {
-            let p = prompt("Clave de Jefe:");
+        function abrirVendedor() { document.getElementById('loginScreen').classList.add('hidden'); document.getElementById('vendedorView').classList.remove('hidden'); }
+        function abrirJefe() { 
+            let p = prompt("Clave de Jefe:"); 
             if(p === "1234") {
-                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('loginScreen').classList.add('hidden'); 
                 document.getElementById('jefeView').classList.remove('hidden');
-            } else {
-                alert("Clave incorrecta");
             }
         }
 
         async function guardarTasa() {
             const tasa = document.getElementById('nuevaTasa').value;
             if(!tasa) return alert("Ingresa un valor");
-            const btn = event.target;
-            btn.disabled = true;
-            btn.innerText = "ESPERE...";
             try {
                 await fetch(urlScript, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ accion: "actualizarTasa", tasa: tasa }) });
-                alert("✅ TASA ACTUALIZADA CORRECTAMENTE");
+                alert("✅ TASA ACTUALIZADA");
                 location.reload();
-            } catch (e) { alert("Error de conexión"); btn.disabled = false; btn.innerText = "ACTUALIZAR"; }
+            } catch (e) { alert("Error de conexión"); }
         }
 
         async function cargarInventario() {
-            const marca = document.getElementById('invMarca').value;
-            const modelo = document.getElementById('invModelo').value;
-            const imei = document.getElementById('invImei').value;
-            const costo = document.getElementById('invCosto').value;
-
-            if(!marca || !modelo || !imei || !costo) return alert("Faltan datos");
-            const btn = document.getElementById('btnCargar');
-            btn.disabled = true;
-            btn.innerText = "CARGANDO...";
-            try {
-                await fetch(urlScript, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ accion: "cargarStock", marca, modelo, imei, costo }) });
-                alert("✅ PRODUCTO REGISTRADO");
-                location.reload(); 
-            } catch (e) { alert("Error al guardar"); btn.disabled = false; btn.innerText = "CARGAR AL STOCK"; }
-        }
-
-        async function confirmarVenta() {
-            if(!window.equipoVenta || !document.getElementById('precioVenta').value) {
-                return alert("Primero selecciona un equipo y pon el precio");
-            }
-            const btn = document.getElementById('btnVenta');
-            btn.disabled = true;
-            btn.innerText = "PROCESANDO...";
-            const datos = {
-                accion: "registrarVenta",
-                modelo: window.equipoVenta.modelo,
-                imei: window.equipoVenta.imei,
-                precio: document.getElementById('precioVenta').value,
-                costo: window.equipoVenta.costo,
-                vendedor: "Vendedor Web"
-            };
-            try {
-                await fetch(urlScript, { method: 'POST', mode: 'no-cors', body: JSON.stringify(datos) });
-                alert("✅ VENTA REGISTRADA");
-                location.reload();
-            } catch (e) {
-                alert("Error al registrar venta");
-                btn.disabled = false;
-                btn.innerText = "VENDER AHORA";
-            }
-        }
-        <div class="bg-slate-800 p-4 rounded-xl border border-blue-500/50 shadow-lg text-left">
-    <h3 class="text-blue-400 font-bold mb-4 uppercase text-xs">Ingreso Masivo de Mercadería</h3>
-    <div class="grid grid-cols-2 gap-3">
-        <input type="text" id="invMarca" class="p-2 rounded-lg bg-slate-700 border border-slate-600 text-white" placeholder="Marca">
-        <input type="text" id="invModelo" class="p-2 rounded-lg bg-slate-700 border border-slate-600 text-white" placeholder="Modelo">
-        <input type="text" id="invImei" class="p-2 rounded-lg bg-slate-700 border border-slate-600 text-white" placeholder="IMEI (Opcional si es masivo)">
-        <input type="number" id="invCosto" class="p-2 rounded-lg bg-slate-700 border border-slate-600 text-white" placeholder="Costo Unit. $">
-        <input type="number" id="invCantidad" class="p-2 rounded-lg bg-slate-700 border border-slate-600 text-white col-span-2" placeholder="CANTIDAD DE EQUIPOS A INGRESAR" value="1">
-    </div>
-    <button onclick="cargarInventario()" id="btnCargar" class="w-full bg-blue-600 mt-4 p-3 rounded-lg font-bold shadow-lg hover:bg-blue-700">CARGAR AL STOCK</button>
-</div>
-
-<div id="vendedorView" class="hidden p-4 max-w-md mx-auto">
-    <h2 class="text-xl font-bold mb-4 text-green-400 font-bold">Venta Mayorista</h2>
-    <div class="bg-white text-slate-900 p-4 rounded-xl space-y-4 shadow-2xl">
-        <input type="text" id="busqueda" onkeyup="buscarStock()" class="w-full border-2 p-2 rounded-lg" placeholder="Buscar equipo...">
-        <div id="listaSugerencias" class="bg-gray-100 max-h-40 overflow-y-auto"></div>
-        
-        <div class="p-3 bg-blue-50 rounded-lg text-center border border-blue-200">
-            <p id="detallesEquipo" class="text-xs text-gray-600 font-bold">Selecciona de la lista</p>
-        </div>
-
-        <div class="flex gap-2">
-            <button onclick="setMoneda('USD')" id="btnUSD" class="flex-1 p-2 rounded-lg font-bold bg-green-600 text-white border-2 border-green-700">$ USD</button>
-            <button onclick="setMoneda('BS')" id="btnBS" class="flex-1 p-2 rounded-lg font-bold bg-gray-200 text-gray-700 border-2 border-gray-300">Bs (Bolivianos)</button>
-        </div>
-
-        <input type="number" id="precioVenta" oninput="calcularTotal()" class="w-full border-2 p-3 rounded-lg text-xl font-bold text-center" placeholder="MONTO A COBRAR">
-        
-        <div class="bg-slate-100 p-3 rounded-lg flex justify-between items-center font-bold">
-            <span class="text-xs text-gray-500 uppercase">Equivalente:</span>
-            <span id="labelEquivalente" class="text-blue-600">0.00</span>
-        </div>
-
-        <button onclick="confirmarVenta()" id="btnVenta" class="w-full bg-green-600 text-white p-4 rounded-xl font-bold shadow-lg">FINALIZAR VENTA</button>
-        <button onclick="location.reload()" class="w-full text-gray-400 text-xs">Volver</button>
-    </div>
-</div>
-
-<script>
-    let monedaActual = 'USD';
-
-    function setMoneda(m) {
-        monedaActual = m;
-        document.getElementById('btnUSD').className = m === 'USD' ? 'flex-1 p-2 rounded-lg font-bold bg-green-600 text-white border-2 border-green-700' : 'flex-1 p-2 rounded-lg font-bold bg-gray-200 text-gray-700 border-2 border-gray-300';
-        document.getElementById('btnBS').className = m === 'BS' ? 'flex-1 p-2 rounded-lg font-bold bg-blue-600 text-white border-2 border-blue-700' : 'flex-1 p-2 rounded-lg font-bold bg-gray-200 text-gray-700 border-2 border-gray-300';
-        calcularTotal();
-    }
-
-    function calcularTotal() {
-        const monto = document.getElementById('precioVenta').value;
-        const label = document.getElementById('labelEquivalente');
-        if(!monto) return;
-        
-        if(monedaActual === 'USD') {
-            label.innerText = (monto * window.tasaGlobal).toFixed(2) + " Bs";
-        } else {
-            label.innerText = (monto / window.tasaGlobal).toFixed(2) + " $ USD";
-        }
-    }
-
-    async function cargarInventario() {
-        const marca = document.getElementById('invMarca').value;
-        const modelo = document.getElementById('invModelo').value;
-        const imei = document.getElementById('invImei').value;
-        const costo = document.getElementById('invCosto').value;
-        const cantidad = document.getElementById('invCantidad').value;
-
-        if(!marca || !modelo || !costo) return alert("Faltan datos");
-        
-        const btn = document.getElementById('btnCargar');
-        btn.disabled = true; btn.innerText = "CARGANDO " + cantidad + " EQUIPOS...";
-
-        try {
-            await fetch(urlScript, { 
-                method: 'POST', 
-                mode: 'no-cors', 
-                body: JSON.stringify({ accion: "cargarStock", marca, modelo, imei, costo, cantidad }) 
-            });
-            alert("✅ " + cantidad + " EQUIPOS CARGADOS AL STOCK");
-            location.reload();
-        } catch (e) { alert("Error"); btn.disabled = false; }
-    }
-
-    async function confirmarVenta() {
-        const monto = document.getElementById('precioVenta').value;
-        if(!window.equipoVenta || !monto) return alert("Completa los datos");
-
-        let pUSD = monedaActual === 'USD' ? monto : (monto / window.tasaGlobal);
-        let pBS = monedaActual === 'BS' ? monto : (monto * window.tasaGlobal);
-
-        const datos = {
-            accion: "registrarVenta",
-            modelo: window.equipoVenta.modelo,
-            imei: window.equipoVenta.imei,
-            costo: window.equipoVenta.costo,
-            precioUsd: parseFloat(pUSD).toFixed(2),
-            precioBs: parseFloat(pBS).toFixed(2),
-            tasaUsada: window.tasaGlobal,
-            vendedor: "Vendedor Web"
-        };
-
-        try {
-            await fetch(urlScript, { method: 'POST', mode: 'no-cors', body: JSON.stringify(datos) });
-            alert("✅ VENTA REGISTRADA");
-            location.reload();
-        } catch (e) { alert("Error"); }
-    }
-</script>
-    </script>
-</body>
-</html>
+            const marca = document.getElementById
