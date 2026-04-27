@@ -22,20 +22,20 @@
         <h2 class="text-xl font-bold mb-4 text-green-400">Registrar Venta</h2>
         <div class="bg-white text-slate-900 p-4 rounded-xl space-y-4 shadow-2xl">
             <div>
-                <label class="block text-xs font-bold text-gray-500 uppercase">Buscar Equipo en Stock</label>
+                <label class="block text-xs font-bold text-gray-500 uppercase text-left">Buscar Equipo en Stock</label>
                 <input type="text" id="busqueda" onkeyup="buscarStock()" class="w-full border-2 border-gray-200 p-2 rounded-lg focus:border-green-500 outline-none" placeholder="Escribe marca o modelo...">
-                <div id="listaSugerencias" class="bg-gray-100 mt-1 max-h-40 overflow-y-auto rounded shadow-inner"></div>
+                <div id="listaSugerencias" class="bg-gray-100 mt-1 max-h-60 overflow-y-auto rounded shadow-inner"></div>
             </div>
             <div class="p-3 bg-blue-50 rounded-lg border border-blue-200">
                 <p id="detallesEquipo" class="text-sm italic text-gray-600 text-center">Selecciona un equipo de la lista...</p>
             </div>
             <div>
-                <label class="block text-xs font-bold text-gray-500 uppercase">Precio Venta ($)</label>
+                <label class="block text-xs font-bold text-gray-500 uppercase text-left">Precio Venta ($)</label>
                 <input type="number" id="precioVenta" class="w-full border-2 border-gray-200 p-2 rounded-lg focus:border-green-500 outline-none" placeholder="Ej: 850">
             </div>
             <div id="calcBs" class="text-right text-sm font-bold text-blue-700 bg-blue-50 p-2 rounded">Total en Bs: 0.00</div>
             <button onclick="confirmarVenta()" id="btnVenta" class="w-full bg-green-600 text-white p-3 rounded-lg font-bold shadow-lg hover:bg-green-700">VENDER AHORA</button>
-            <button onclick="location.reload()" class="w-full text-gray-400 text-xs mt-2 uppercase font-bold tracking-widest">← Volver</button>
+            <button onclick="location.reload()" class="w-full text-gray-400 text-xs mt-2 uppercase font-bold tracking-widest text-center">← Volver</button>
         </div>
     </div>
 
@@ -45,143 +45,18 @@
             <button onclick="location.reload()" class="bg-red-500 px-3 py-1 rounded text-xs font-bold uppercase">Salir</button>
         </div>
         
-        <div class="bg-slate-800 p-4 rounded-xl border border-yellow-600/50 mb-6 shadow-lg">
-            <h3 class="text-yellow-500 font-bold mb-3 underline">TIPO DE CAMBIO (BOLIVIA)</h3>
+        <div class="bg-slate-800 p-4 rounded-xl border border-yellow-600/50 mb-6 shadow-lg text-left">
+            <h3 class="text-yellow-500 font-bold mb-3 underline uppercase text-xs">Tipo de Cambio (Bolivia)</h3>
             <div class="flex gap-2">
                 <input type="number" id="nuevaTasa" class="bg-slate-700 p-2 rounded-lg w-full text-white outline-none border border-slate-600" placeholder="Ej: 12.80">
                 <button onclick="guardarTasa()" class="bg-yellow-600 px-6 rounded-lg font-bold hover:bg-yellow-700 transition">ACTUALIZAR</button>
             </div>
         </div>
 
-        <div class="bg-slate-800 p-4 rounded-xl border border-blue-500/50 shadow-lg">
-            <h3 class="text-blue-400 font-bold mb-4 uppercase text-sm">Ingresar Nueva Mercadería</h3>
+        <div class="bg-slate-800 p-4 rounded-xl border border-blue-500/50 shadow-lg text-left">
+            <h3 class="text-blue-400 font-bold mb-4 uppercase text-xs">Ingresar Nueva Mercadería</h3>
             <div class="grid grid-cols-2 gap-3">
                 <input type="text" id="invMarca" class="p-2 rounded-lg bg-slate-700 border border-slate-600 text-white" placeholder="Marca (Samsung)">
                 <input type="text" id="invModelo" class="p-2 rounded-lg bg-slate-700 border border-slate-600 text-white" placeholder="Modelo (S24)">
                 <input type="text" id="invImei" class="p-2 rounded-lg bg-slate-700 border border-slate-600 text-white" placeholder="IMEI">
-                <input type="number" id="invCosto" class="p-2 rounded-lg bg-slate-700 border border-slate-600 text-white" placeholder="Costo en $">
-            </div>
-            <button onclick="cargarInventario()" id="btnCargar" class="w-full bg-blue-600 mt-4 p-3 rounded-lg font-bold shadow-lg hover:bg-blue-700">CARGAR AL STOCK</button>
-        </div>
-    </div>
-
-    <script>
-        // 1. PEGA AQUÍ TU NUEVO LINK DE GOOGLE
-        const urlScript = "https://script.google.com/macros/s/AKfycbxAggADAOcbUYfW-VWtT5-aeU6ZIBCpXzhoHleTh3pZAk9Q0Kq3iSxSVsh-s70YOZPq/exec";
-
-        // Cargar tasa al iniciar
-        window.onload = async () => {
-            try {
-                const response = await fetch(urlScript + "?action=getTasa");
-                const tasa = await response.text();
-                document.getElementById('tasaDia').innerText = "Tasa del día: 1$ = " + (tasa || "12.50") + " Bs";
-                window.tasaGlobal = parseFloat(tasa) || 12.50;
-            } catch (e) {
-                document.getElementById('tasaDia').innerText = "Tasa: 12.50 Bs (Modo Offline)";
-                window.tasaGlobal = 12.50;
-            }
-        };
-
-        // Cálculo de Bs en tiempo real para el vendedor
-        document.getElementById('precioVenta').oninput = function() {
-            let totalBs = (this.value * window.tasaGlobal).toFixed(2);
-            document.getElementById('calcBs').innerText = "Total en Bs: " + totalBs;
-        };
-
-        function abrirVendedor() {
-            document.getElementById('loginScreen').classList.add('hidden');
-            document.getElementById('vendedorView').classList.remove('hidden');
-        }
-
-        function abrirJefe() {
-            let p = prompt("Clave de Jefe:");
-            if(p === "1234") {
-                document.getElementById('loginScreen').classList.add('hidden');
-                document.getElementById('jefeView').classList.remove('hidden');
-            } else {
-                alert("Clave incorrecta");
-            }
-        }
-
-        async function guardarTasa() {
-            const tasa = document.getElementById('nuevaTasa').value;
-            if(!tasa) return alert("Ingresa un valor");
-            const btn = event.target;
-            btn.disabled = true;
-            btn.innerText = "ESPERE...";
-            
-            try {
-                await fetch(urlScript, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ accion: "actualizarTasa", tasa: tasa }) });
-                alert("✅ TASA ACTUALIZADA CORRECTAMENTE");
-                location.reload();
-            } catch (e) { alert("Error de conexión"); btn.disabled = false; btn.innerText = "ACTUALIZAR"; }
-        }
-
-        async function cargarInventario() {
-            const marca = document.getElementById('invMarca').value;
-            const modelo = document.getElementById('invModelo').value;
-            const imei = document.getElementById('invImei').value;
-            const costo = document.getElementById('invCosto').value;
-
-            if(!marca || !modelo || !imei || !costo) return alert("Faltan datos");
-            const btn = document.getElementById('btnCargar');
-            btn.disabled = true;
-            btn.innerText = "CARGANDO...";
-
-            try {
-                await fetch(urlScript, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ accion: "cargarStock", marca, modelo, imei, costo }) });
-                alert("✅ PRODUCTO REGISTRADO");
-                document.querySelectorAll('#jefeView input').forEach(i => i.value = "");
-            } catch (e) { alert("Error al guardar"); }
-            finally { btn.disabled = false; btn.innerText = "CARGAR AL STOCK"; }
-        }
-
-        function buscarStock() {
-            // Función visual por ahora, en el siguiente paso la conectaremos al stock real
-            const busq = document.getElementById('busqueda').value;
-            const sugerencias = document.getElementById('listaSugerencias');
-            if(busq.length > 2) {
-                sugerencias.innerHTML = `<div onclick="seleccionar('Ejemplo: iPhone 15', '123456789', 900)" class="p-2 border-b text-slate-800 cursor-pointer hover:bg-green-100">Click aquí para probar selección</div>`;
-            } else { sugerencias.innerHTML = ""; }
-        }
-
-        function seleccionar(mod, im, cos) {
-            document.getElementById('detallesEquipo').innerHTML = `<b>${mod}</b><br>IMEI: ${im}`;
-            document.getElementById('busqueda').value = mod;
-            document.getElementById('listaSugerencias').innerHTML = "";
-            window.equipoVenta = { modelo: mod, imei: im, costo: cos };
-        }
-        async function confirmarVenta() {
-    if(!window.equipoVenta || !document.getElementById('precioVenta').value) {
-        return alert("Primero selecciona un equipo y pon el precio");
-    }
-
-    const btn = document.getElementById('btnVenta');
-    btn.disabled = true;
-    btn.innerText = "PROCESANDO...";
-
-    const datos = {
-        accion: "registrarVenta",
-        modelo: window.equipoVenta.modelo,
-        imei: window.equipoVenta.imei,
-        precio: document.getElementById('precioVenta').value,
-        vendedor: "Vendedor Web"
-    };
-
-    try {
-        await fetch(urlScript, { 
-            method: 'POST', 
-            mode: 'no-cors', 
-            body: JSON.stringify(datos) 
-        });
-        alert("✅ VENTA REGISTRADA Y EQUIPO DESCONTADO DEL STOCK");
-        location.reload();
-    } catch (e) {
-        alert("Error al registrar venta");
-        btn.disabled = false;
-        btn.innerText = "VENDER AHORA";
-    }
-}
-    </script>
-</body>
-</html>
+                <input type="number" id="invCosto" class="p-2 rounded-lg bg-slate-700 border border-slate-6
