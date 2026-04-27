@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>POS Mayorista Bolivia</title>
+    <title>POS Mayorista - MOONSTORESA</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -17,90 +17,87 @@
 <body class="bg-slate-900 text-white font-sans">
 
     <div id="areaImpresion" class="hidden text-slate-900 p-4 font-mono text-xs">
-        <div class="text-center border-b pb-2 mb-2">
-            <h1 id="printTienda" class="text-lg font-bold uppercase"></h1>
-            <p id="printContacto"></p>
+        <div class="text-center border-b-2 border-dashed pb-2 mb-2">
+            <h1 class="text-lg font-bold">MOONSTORESA</h1>
+            <p>TEL: +591 60126617</p>
         </div>
         <div class="space-y-1">
             <p><b>FECHA:</b> <span id="printFecha"></span></p>
             <p><b>EQUIPO:</b> <span id="printModelo"></span></p>
             <p><b>IMEI:</b> <span id="printImei"></span></p>
-            <div class="border-t pt-2 mt-2 font-bold text-sm flex justify-between">
-                <span>TOTAL:</span>
+            <div class="border-t border-dashed pt-2 mt-2 font-bold text-sm flex justify-between">
+                <span>TOTAL PAGADO:</span>
                 <span id="printMonto"></span>
             </div>
         </div>
-        <p class="mt-4 text-center italic">¡Gracias por su compra!</p>
+        <p class="mt-4 text-center italic">¡Gracias por su preferencia!</p>
     </div>
 
     <div id="loginScreen" class="flex flex-col items-center justify-center h-screen">
         <div class="bg-slate-800 p-8 rounded-2xl shadow-2xl border border-slate-700 w-80 text-center">
-            <h1 class="text-2xl font-bold mb-6 text-white text-center">SISTEMA POS</h1>
+            <h1 class="text-2xl font-bold mb-6 text-blue-400">MOONSTORESA</h1>
             <div id="tasaDia" class="text-yellow-400 mb-4 font-mono text-sm font-bold italic underline">Conectando...</div>
-            <button onclick="abrirVendedor()" class="w-full bg-green-600 p-3 rounded-lg mb-3 font-bold hover:bg-green-700 transition">VENDEDOR</button>
-            <button onclick="abrirJefe()" class="w-full bg-blue-600 p-3 rounded-lg font-bold hover:bg-blue-700 transition">JEFE / DUEÑO</button>
+            <button onclick="abrirVendedor()" class="w-full bg-green-600 p-3 rounded-lg mb-3 font-bold hover:bg-green-700">VENDEDOR</button>
+            <button onclick="abrirJefe()" class="w-full bg-blue-600 p-3 rounded-lg font-bold hover:bg-blue-700">JEFE / DUEÑO</button>
         </div>
     </div>
 
     <div id="vendedorView" class="hidden p-4 max-w-md mx-auto">
         <div class="bg-white text-slate-900 p-5 rounded-2xl shadow-2xl space-y-4">
-            <h2 class="text-xl font-black text-green-600 text-center uppercase">Nueva Venta</h2>
-            
-            <input type="text" id="busqueda" onkeyup="buscarStock()" class="w-full border-2 p-3 rounded-xl outline-none" placeholder="🔍 Buscar equipo...">
+            <h2 class="text-xl font-black text-green-600 text-center uppercase italic">Venta Directa</h2>
+            <input type="text" id="busqueda" onkeyup="buscarStock()" class="w-full border-2 p-3 rounded-xl outline-none focus:border-green-500 shadow-sm" placeholder="🔍 Buscar equipo o imei...">
             <div id="listaSugerencias" class="bg-slate-50 max-h-48 overflow-y-auto rounded-lg border"></div>
-
-            <div id="detallesEquipo" class="p-3 bg-blue-50 text-blue-800 rounded-xl text-center text-sm font-bold border italic">Selecciona un equipo</div>
-
+            <div id="detallesEquipo" class="p-3 bg-blue-50 text-blue-800 rounded-xl text-center text-sm font-bold border-2 border-blue-100">Seleccione un equipo</div>
             <div class="flex gap-2">
-                <button onclick="setMoneda('USD')" id="btnUSD" class="flex-1 p-2 rounded-xl font-bold bg-green-600 text-white">COBRAR $</button>
-                <button onclick="setMoneda('BS')" id="btnBS" class="flex-1 p-2 rounded-xl font-bold bg-slate-200 text-slate-600">COBRAR BS.</button>
+                <button onclick="setMoneda('USD')" id="btnUSD" class="flex-1 p-2 rounded-xl font-bold bg-green-600 text-white">$ USD</button>
+                <button onclick="setMoneda('BS')" id="btnBS" class="flex-1 p-2 rounded-xl font-bold bg-slate-200 text-slate-600">Bs.</button>
             </div>
-
-            <input type="number" id="precioVenta" oninput="calcularTotal()" class="w-full border-2 p-4 rounded-2xl text-2xl font-black text-center" placeholder="0.00">
-            
-            <div class="bg-slate-800 p-3 rounded-xl flex justify-between items-center font-mono">
-                <span class="text-[10px] text-slate-400 font-bold uppercase">Eq. Bs/USD:</span>
+            <input type="number" id="precioVenta" oninput="calcularTotal()" class="w-full border-2 p-4 rounded-2xl text-2xl font-black text-center text-blue-600" placeholder="0.00">
+            <div class="bg-slate-800 p-3 rounded-xl flex justify-between items-center">
+                <span class="text-[10px] text-slate-400 font-bold uppercase">Equivalente:</span>
                 <span id="labelEquivalente" class="text-yellow-400 font-bold">0.00</span>
             </div>
-
-            <button onclick="confirmarVenta()" id="btnVenta" class="w-full bg-green-600 text-white p-4 rounded-2xl font-black shadow-lg uppercase">Finalizar Venta</button>
-            <button onclick="location.reload()" class="w-full text-slate-400 text-xs font-bold py-2 text-center uppercase tracking-widest">← Volver</button>
+            <button onclick="confirmarVenta()" id="btnVenta" class="w-full bg-green-600 text-white p-4 rounded-2xl font-black shadow-lg uppercase hover:bg-green-700">Finalizar Venta</button>
+            <button onclick="location.reload()" class="w-full text-slate-400 text-xs font-bold py-2 text-center underline">VOLVER</button>
         </div>
     </div>
 
     <div id="jefeView" class="hidden p-4 max-w-lg mx-auto">
         <div class="flex justify-between items-center mb-6">
-            <h2 class="text-xl font-bold text-blue-400 uppercase tracking-tighter">Panel Control</h2>
-            <button onclick="location.reload()" class="bg-red-500 px-3 py-1 rounded text-xs font-bold uppercase shadow-lg text-white">Salir</button>
+            <h2 class="text-xl font-bold text-blue-400">PANEL GERENCIAL</h2>
+            <button onclick="location.reload()" class="bg-red-500 px-3 py-1 rounded text-xs font-bold text-white uppercase">Salir</button>
         </div>
 
-        <div class="bg-slate-800 p-4 rounded-2xl border border-yellow-600/30 mb-6 shadow-xl text-left">
-            <h3 class="text-yellow-500 text-[10px] font-bold mb-2 uppercase">Tipo de Cambio</h3>
-            <div class="flex gap-2 text-slate-900">
-                <input type="number" id="nuevaTasa" class="bg-white p-3 rounded-xl w-full outline-none font-bold" placeholder="Ej: 12.80">
-                <button onclick="guardarTasa()" class="bg-yellow-600 px-6 rounded-xl font-bold text-white uppercase">OK</button>
+        <div class="bg-gradient-to-br from-red-600 to-red-900 p-5 rounded-2xl shadow-xl mb-6 text-center">
+            <h3 class="text-white text-xs font-bold mb-4 uppercase tracking-widest">Cierre de Caja Diario</h3>
+            <button onclick="ejecutarCierre()" id="btnCierre" class="w-full bg-white text-red-600 p-4 rounded-xl font-black shadow-lg hover:bg-slate-100 transition">
+                <i class="fas fa-lock mr-2"></i> CERRAR JORNADA Y LIMPIAR
+            </button>
+        </div>
+
+        <div class="bg-slate-800 p-4 rounded-2xl border border-yellow-600/30 mb-6 shadow-xl">
+            <h3 class="text-yellow-500 text-[10px] font-bold mb-2 uppercase">Configurar Dólar</h3>
+            <div class="flex gap-2">
+                <input type="number" id="nuevaTasa" class="bg-white p-3 rounded-xl w-full text-slate-900 font-bold outline-none" placeholder="Ej: 12.80">
+                <button onclick="guardarTasa()" class="bg-yellow-600 px-6 rounded-xl font-bold text-white">OK</button>
             </div>
         </div>
 
-        <div class="bg-slate-800 p-5 rounded-2xl border border-blue-500/30 shadow-2xl space-y-4 text-left">
-            <h3 class="text-blue-400 text-xs font-bold mb-2 uppercase text-center tracking-widest">Carga de Mercadería</h3>
+        <div class="bg-slate-800 p-5 rounded-2xl border border-blue-500/30 shadow-2xl space-y-4">
+            <h3 class="text-blue-400 text-xs font-bold mb-2 uppercase text-center tracking-widest">Entrada de Mercadería</h3>
             <div class="grid grid-cols-2 gap-3 text-slate-900">
                 <input type="text" id="invMarca" class="p-3 rounded-xl bg-white text-sm font-semibold" placeholder="Marca">
                 <input type="text" id="invModelo" class="p-3 rounded-xl bg-white text-sm font-semibold" placeholder="Modelo">
-                <input type="text" id="invImei" class="p-3 rounded-xl bg-white text-sm font-semibold col-span-2" placeholder="IMEI (Opcional)">
+                <input type="text" id="invImei" class="p-3 rounded-xl bg-white text-sm font-semibold col-span-2" placeholder="IMEI">
                 <input type="number" id="invCosto" class="p-3 rounded-xl bg-white text-sm font-semibold" placeholder="Costo Unit $">
                 <input type="number" id="invCantidad" class="p-3 rounded-xl bg-slate-200 font-bold text-center" value="1">
             </div>
-            <button onclick="cargarInventario()" id="btnCargar" class="w-full bg-blue-600 text-white p-4 rounded-2xl font-black shadow-lg uppercase">Cargar Stock</button>
+            <button onclick="cargarInventario()" id="btnCargar" class="w-full bg-blue-600 text-white p-4 rounded-2xl font-black shadow-lg">CARGAR AL STOCK</button>
         </div>
     </div>
 
     <script>
-        // --- CONFIGURACIÓN DE TU TIENDA ---
-        const NOMBRE_TIENDA = "MOONSTORESA";
-        const CELULAR_TIENDA = "+591 60126617"; 
-        const urlScript = "https://script.google.com/macros/s/AKfycby2DXgw5XKfK5cM0jjfFJmalyUkA8vOd6vj4PQQdetUj1z692Gnrtbg84ofjGygIkUP/exec";
-        
+        const urlScript = "https://script.google.com/macros/s/AKfycbyFj9TIxfCP0HnygbtPcv6PuVGHqxZID0cASXIlDmPDFY_ZB7OS3K5A7deg0fo_j5ZG/exec";
         let stockReal = [];
         let monedaActual = 'USD';
         window.tasaGlobal = 12.50;
@@ -118,8 +115,8 @@
 
         function setMoneda(m) {
             monedaActual = m;
-            document.getElementById('btnUSD').className = m === 'USD' ? 'flex-1 p-2 rounded-xl font-bold bg-green-600 text-white' : 'flex-1 p-2 rounded-xl font-bold bg-slate-200 text-slate-600';
-            document.getElementById('btnBS').className = m === 'BS' ? 'flex-1 p-2 rounded-xl font-bold bg-blue-600 text-white' : 'flex-1 p-2 rounded-xl font-bold bg-slate-200 text-slate-600';
+            document.getElementById('btnUSD').className = m === 'USD' ? 'flex-1 p-2 rounded-xl font-bold bg-green-600 text-white shadow-md' : 'flex-1 p-2 rounded-xl font-bold bg-slate-200 text-slate-600';
+            document.getElementById('btnBS').className = m === 'BS' ? 'flex-1 p-2 rounded-xl font-bold bg-blue-600 text-white shadow-md' : 'flex-1 p-2 rounded-xl font-bold bg-slate-200 text-slate-600';
             calcularTotal();
         }
 
@@ -138,7 +135,7 @@
             const filtrados = stockReal.filter(i => i.modelo.toLowerCase().includes(busq) || i.imei.toString().includes(busq));
             filtrados.forEach(i => {
                 const d = document.createElement('div');
-                d.className = "p-3 border-b text-slate-800 text-sm cursor-pointer hover:bg-green-50 text-left";
+                d.className = "p-3 border-b text-slate-800 text-sm cursor-pointer hover:bg-blue-50 text-left";
                 d.innerHTML = `<b>${i.marca} ${i.modelo}</b><br><span class="text-xs text-gray-400 italic">IMEI: ${i.imei}</span>`;
                 d.onclick = () => {
                     window.equipoVenta = i;
@@ -152,8 +149,7 @@
 
         async function confirmarVenta() {
             const monto = document.getElementById('precioVenta').value;
-            if(!window.equipoVenta || !monto) return alert("Selecciona equipo y precio");
-            
+            if(!window.equipoVenta || !monto) return alert("Seleccione equipo y precio");
             const btn = document.getElementById('btnVenta');
             btn.disabled = true; btn.innerText = "REGISTRANDO...";
 
@@ -170,17 +166,23 @@
 
             try {
                 await fetch(urlScript, { method: 'POST', mode: 'no-cors', body: JSON.stringify(datos) });
-                
-                // PREPARAR RECIBO
-                document.getElementById('printTienda').innerText = NOMBRE_TIENDA;
-                document.getElementById('printContacto').innerText = "CEL: " + CELULAR_TIENDA;
                 document.getElementById('printFecha').innerText = new Date().toLocaleString();
                 document.getElementById('printModelo').innerText = datos.modelo;
                 document.getElementById('printImei').innerText = datos.imei;
                 document.getElementById('printMonto').innerText = monedaActual === 'USD' ? monto + " USD" : monto + " BS";
-                
-                alert("✅ Venta Exitosa. Presione aceptar para imprimir.");
-                window.print(); // Abre el menú de impresión del celular o PC
+                alert("✅ Venta Exitosa. Presione aceptar para el Ticket.");
+                window.print();
+                location.reload();
+            } catch (e) { alert("Error"); btn.disabled = false; }
+        }
+
+        async function ejecutarCierre() {
+            if(!confirm("¿CERRAR CAJA? Se archivarán los totales y se limpiará la lista de ventas de hoy.")) return;
+            const btn = document.getElementById('btnCierre');
+            btn.disabled = true; btn.innerText = "PROCESANDO CIERRE...";
+            try {
+                await fetch(urlScript, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ accion: "cierreCaja" }) });
+                alert("✅ CIERRE EXITOSO. La base de ventas ha sido limpiada para mañana.");
                 location.reload();
             } catch (e) { alert("Error"); btn.disabled = false; }
         }
