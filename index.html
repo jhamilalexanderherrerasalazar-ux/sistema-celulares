@@ -151,6 +151,37 @@
             document.getElementById('listaSugerencias').innerHTML = "";
             window.equipoVenta = { modelo: mod, imei: im, costo: cos };
         }
+        async function confirmarVenta() {
+    if(!window.equipoVenta || !document.getElementById('precioVenta').value) {
+        return alert("Primero selecciona un equipo y pon el precio");
+    }
+
+    const btn = document.getElementById('btnVenta');
+    btn.disabled = true;
+    btn.innerText = "PROCESANDO...";
+
+    const datos = {
+        accion: "registrarVenta",
+        modelo: window.equipoVenta.modelo,
+        imei: window.equipoVenta.imei,
+        precio: document.getElementById('precioVenta').value,
+        vendedor: "Vendedor Web"
+    };
+
+    try {
+        await fetch(urlScript, { 
+            method: 'POST', 
+            mode: 'no-cors', 
+            body: JSON.stringify(datos) 
+        });
+        alert("✅ VENTA REGISTRADA Y EQUIPO DESCONTADO DEL STOCK");
+        location.reload();
+    } catch (e) {
+        alert("Error al registrar venta");
+        btn.disabled = false;
+        btn.innerText = "VENDER AHORA";
+    }
+}
     </script>
 </body>
 </html>
