@@ -11,10 +11,10 @@
 
     <div id="loginScreen" class="flex flex-col items-center justify-center h-screen">
         <div class="bg-slate-800 p-8 rounded-2xl shadow-2xl border border-slate-700 w-80 text-center">
-            <h1 class="text-2xl font-bold mb-6">SISTEMA POS</h1>
+            <h1 class="text-2xl font-bold mb-6 text-white">SISTEMA POS</h1>
             <div id="tasaDia" class="text-yellow-400 mb-4 font-mono text-sm font-bold italic underline">Conectando con Google...</div>
-            <button onclick="abrirVendedor()" class="w-full bg-green-600 p-3 rounded-lg mb-3 font-bold hover:bg-green-700">VENDEDOR</button>
-            <button onclick="abrirJefe()" class="w-full bg-blue-600 p-3 rounded-lg font-bold hover:bg-blue-700">JEFE / DUEÑO</button>
+            <button onclick="abrirVendedor()" class="w-full bg-green-600 p-3 rounded-lg mb-3 font-bold hover:bg-green-700 transition">VENDEDOR</button>
+            <button onclick="abrirJefe()" class="w-full bg-blue-600 p-3 rounded-lg font-bold hover:bg-blue-700 transition">JEFE / DUEÑO</button>
         </div>
     </div>
 
@@ -40,61 +40,55 @@
             </div>
 
             <button onclick="confirmarVenta()" id="btnVenta" class="w-full bg-green-600 text-white p-4 rounded-2xl font-black shadow-lg hover:bg-green-700 transition uppercase">Finalizar Venta</button>
-            <button onclick="location.reload()" class="w-full text-slate-400 text-xs font-bold py-2">← VOLVER</button>
+            <button onclick="location.reload()" class="w-full text-slate-400 text-xs font-bold py-2 text-center uppercase tracking-widest">← Volver</button>
         </div>
     </div>
 
     <div id="jefeView" class="hidden p-4 max-w-lg mx-auto">
         <div class="flex justify-between items-center mb-6">
-            <h2 class="text-xl font-bold text-blue-400 uppercase">Panel Control</h2>
-            <button onclick="location.reload()" class="bg-red-500 px-3 py-1 rounded text-xs font-bold">SALIR</button>
+            <h2 class="text-xl font-bold text-blue-400 uppercase tracking-tighter">Panel Control</h2>
+            <button onclick="location.reload()" class="bg-red-500 px-3 py-1 rounded text-xs font-bold uppercase shadow-lg">Salir</button>
         </div>
 
-        <div class="bg-slate-800 p-4 rounded-2xl border border-yellow-600/30 mb-6">
-            <h3 class="text-yellow-500 text-xs font-bold mb-2 uppercase">Tipo de Cambio</h3>
+        <div class="bg-slate-800 p-4 rounded-2xl border border-yellow-600/30 mb-6 shadow-xl">
+            <h3 class="text-yellow-500 text-[10px] font-bold mb-2 uppercase tracking-widest">Tipo de Cambio</h3>
             <div class="flex gap-2">
-                <input type="number" id="nuevaTasa" class="bg-slate-700 p-3 rounded-xl w-full text-white outline-none" placeholder="Ej: 12.80">
-                <button onclick="guardarTasa()" class="bg-yellow-600 px-4 rounded-xl font-bold">OK</button>
+                <input type="number" id="nuevaTasa" class="bg-slate-700 p-3 rounded-xl w-full text-white outline-none border border-slate-600" placeholder="Ej: 12.80">
+                <button onclick="guardarTasa()" class="bg-yellow-600 px-6 rounded-xl font-bold hover:bg-yellow-700 transition">OK</button>
             </div>
         </div>
 
-        <div class="bg-slate-800 p-4 rounded-2xl border border-blue-500/30">
-            <div class="bg-slate-800 p-4 rounded-2xl border border-blue-500/30">
-    <h3 class="text-blue-400 text-xs font-bold mb-4 uppercase text-center">Registro Rápido con Foto</h3>
-    <div class="grid grid-cols-2 gap-3 text-slate-900">
-        <input type="text" id="invMarca" class="p-3 rounded-xl bg-white text-sm" placeholder="Marca (Ej: Xiaomi)">
-        <input type="text" id="invModelo" class="p-3 rounded-xl bg-white text-sm" placeholder="Modelo (Ej: Note 13)">
-        <input type="number" id="invCosto" class="p-3 rounded-xl bg-white text-sm" placeholder="Costo Unit $">
-        <input type="number" id="invCantidad" class="p-3 rounded-xl bg-slate-200 font-bold" value="1">
-        
-        <div class="col-span-2 space-y-2">
-            <button onclick="document.getElementById('inputFoto').click()" class="w-full bg-slate-700 text-white p-3 rounded-xl text-xs font-bold border-2 border-dashed border-slate-500">
-                <i class="fas fa-camera mr-2"></i> TOMAR FOTO DEL LOTE / EQUIPO
-            </button>
-            <input type="file" id="inputFoto" accept="image/*" capture="environment" class="hidden">
-            <p id="statusFoto" class="text-[10px] text-green-400 text-center hidden italic">Foto lista para subir</p>
-        </div>
-    </div>
-    <button onclick="cargarInventario()" id="btnCargar" class="w-full bg-blue-600 mt-4 p-4 rounded-2xl font-bold hover:bg-blue-700">CARGAR STOCK AHORA</button>
-</div>
-            <div class="grid grid-cols-2 gap-3">
-                <input type="text" id="invMarca" class="p-3 rounded-xl bg-white text-slate-900 text-sm" placeholder="Marca">
-                <input type="text" id="invModelo" class="p-3 rounded-xl bg-white text-slate-900 text-sm" placeholder="Modelo">
-                <input type="text" id="invImei" class="p-3 rounded-xl bg-white text-slate-900 text-sm col-span-2" placeholder="IMEI (Si es solo uno)">
-                <input type="number" id="invCosto" class="p-3 rounded-xl bg-white text-slate-900 text-sm" placeholder="Costo $">
-                <input type="number" id="invCantidad" class="p-3 rounded-xl bg-slate-200 text-slate-900 text-sm font-bold" value="1">
+        <div class="bg-slate-800 p-5 rounded-2xl border border-blue-500/30 shadow-2xl space-y-4">
+            <h3 class="text-blue-400 text-xs font-bold mb-2 uppercase text-center tracking-widest">Registro Rápido con Foto</h3>
+            
+            <div class="grid grid-cols-2 gap-3 text-slate-900">
+                <input type="text" id="invMarca" class="p-3 rounded-xl bg-white text-sm font-semibold" placeholder="Marca (Ej: Xiaomi)">
+                <input type="text" id="invModelo" class="p-3 rounded-xl bg-white text-sm font-semibold" placeholder="Modelo (Ej: Note 13)">
+                <input type="text" id="invImei" class="p-3 rounded-xl bg-white text-sm font-semibold col-span-2" placeholder="IMEI (Opcional si es lote)">
+                <input type="number" id="invCosto" class="p-3 rounded-xl bg-white text-sm font-semibold" placeholder="Costo Unit $">
+                <input type="number" id="invCantidad" class="p-3 rounded-xl bg-slate-200 font-bold text-center" value="1">
             </div>
-            <button onclick="cargarInventario()" id="btnCargar" class="w-full bg-blue-600 mt-4 p-4 rounded-2xl font-bold hover:bg-blue-700 transition">CARGAR AL STOCK</button>
+
+            <div class="space-y-2">
+                <button onclick="abrirCamara()" class="w-full bg-slate-700 text-white p-4 rounded-xl text-xs font-bold border-2 border-dashed border-slate-500 hover:bg-slate-600 transition">
+                    <i class="fas fa-camera mr-2 text-blue-400"></i> TOMAR FOTO DEL LOTE / EQUIPO
+                </button>
+                <input type="file" id="inputFoto" accept="image/*" capture="environment" class="hidden">
+                <p id="statusFoto" class="text-[10px] text-center hidden font-bold"></p>
+            </div>
+
+            <button onclick="cargarInventario()" id="btnCargar" class="w-full bg-blue-600 text-white p-4 rounded-2xl font-black shadow-lg hover:bg-blue-700 transition uppercase tracking-wider">Cargar Stock Ahora</button>
         </div>
     </div>
 
     <script>
-        // PEGA AQUÍ TU NUEVO LINK DE GOOGLE
+        // CONFIGURACIÓN
         const urlScript = "https://script.google.com/macros/s/AKfycby2DXgw5XKfK5cM0jjfFJmalyUkA8vOd6vj4PQQdetUj1z692Gnrtbg84ofjGygIkUP/exec";
         
         let stockReal = [];
         let monedaActual = 'USD';
         window.tasaGlobal = 12.50;
+        window.fotoCapturada = "Sin Foto";
 
         window.onload = async () => {
             try {
@@ -106,14 +100,18 @@
                 const resInv = await fetch(urlScript + "?action=getInventario");
                 stockReal = await resInv.json();
             } catch (e) {
-                document.getElementById('tasaDia').innerText = "Error de Conexión";
+                document.getElementById('tasaDia').innerText = "Modo Offline (Tasa: 12.50 Bs)";
             }
         };
 
+        // FUNCIONES DE INTERFAZ
+        function abrirVendedor() { document.getElementById('loginScreen').classList.add('hidden'); document.getElementById('vendedorView').classList.remove('hidden'); }
+        function abrirJefe() { if(prompt("Clave:") === "1234") { document.getElementById('loginScreen').classList.add('hidden'); document.getElementById('jefeView').classList.remove('hidden'); } }
+        
         function setMoneda(m) {
             monedaActual = m;
-            document.getElementById('btnUSD').className = m === 'USD' ? 'flex-1 p-2 rounded-xl font-bold bg-green-600 text-white' : 'flex-1 p-2 rounded-xl font-bold bg-slate-200 text-slate-600';
-            document.getElementById('btnBS').className = m === 'BS' ? 'flex-1 p-2 rounded-xl font-bold bg-blue-600 text-white' : 'flex-1 p-2 rounded-xl font-bold bg-slate-200 text-slate-600';
+            document.getElementById('btnUSD').className = m === 'USD' ? 'flex-1 p-2 rounded-xl font-bold bg-green-600 text-white shadow-inner' : 'flex-1 p-2 rounded-xl font-bold bg-slate-200 text-slate-600';
+            document.getElementById('btnBS').className = m === 'BS' ? 'flex-1 p-2 rounded-xl font-bold bg-blue-600 text-white shadow-inner' : 'flex-1 p-2 rounded-xl font-bold bg-slate-200 text-slate-600';
             calcularTotal();
         }
 
@@ -122,6 +120,62 @@
             const label = document.getElementById('labelEquivalente');
             if(!monto) { label.innerText = "0.00"; return; }
             label.innerText = monedaActual === 'USD' ? (monto * window.tasaGlobal).toFixed(2) + " Bs" : (monto / window.tasaGlobal).toFixed(2) + " $ USD";
+        }
+
+        // FUNCIONES DE CÁMARA
+        function abrirCamara() { document.getElementById('inputFoto').click(); }
+
+        document.getElementById('inputFoto').onchange = function(e) {
+            const status = document.getElementById('statusFoto');
+            const reader = new FileReader();
+            if (e.target.files && e.target.files[0]) {
+                reader.onload = function(event) {
+                    window.fotoCapturada = "Imagen Cargada ✅"; // Guardamos estado
+                    status.innerHTML = "✅ FOTO CAPTURADA CON ÉXITO";
+                    status.classList.remove('hidden');
+                    status.classList.add('bg-green-600/20', 'text-green-400', 'p-2', 'rounded-lg');
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        };
+
+        // ACCIONES DE DATOS
+        async function guardarTasa() {
+            const t = document.getElementById('nuevaTasa').value;
+            if(!t) return;
+            await fetch(urlScript, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ accion: "actualizarTasa", tasa: t }) });
+            alert("✅ Tasa Actualizada");
+            location.reload();
+        }
+
+        async function cargarInventario() {
+            const btn = document.getElementById('btnCargar');
+            const marca = document.getElementById('invMarca').value;
+            const modelo = document.getElementById('invModelo').value;
+            const costo = document.getElementById('invCosto').value;
+
+            if(!marca || !modelo || !costo) return alert("⚠️ Faltan datos (Marca, Modelo o Costo)");
+            
+            btn.disabled = true; btn.innerText = "CARGANDO DATOS...";
+
+            const datos = {
+                accion: "cargarStock",
+                marca: marca,
+                modelo: modelo,
+                imei: document.getElementById('invImei').value || "PENDIENTE",
+                costo: costo,
+                cantidad: document.getElementById('invCantidad').value || 1,
+                fotoUrl: window.fotoCapturada
+            };
+
+            try {
+                await fetch(urlScript, { method: 'POST', mode: 'no-cors', body: JSON.stringify(datos) });
+                alert("✅ Stock Registrado Correctamente");
+                location.reload();
+            } catch (e) {
+                alert("Error de conexión");
+                btn.disabled = false;
+            }
         }
 
         function buscarStock() {
@@ -134,10 +188,10 @@
             filtrados.forEach(i => {
                 const d = document.createElement('div');
                 d.className = "p-3 border-b text-slate-800 text-sm cursor-pointer hover:bg-green-50";
-                d.innerHTML = `<b>${i.marca} ${i.modelo}</b><br><span class="text-xs text-gray-400">IMEI: ${i.imei}</span>`;
+                d.innerHTML = `<b>${i.marca} ${i.modelo}</b><br><span class="text-[10px] text-gray-400 italic">IMEI: ${i.imei}</span>`;
                 d.onclick = () => {
                     window.equipoVenta = i;
-                    document.getElementById('detallesEquipo').innerText = i.marca + " " + i.modelo + " (IMEI: " + i.imei + ")";
+                    document.getElementById('detallesEquipo').innerHTML = `📦 <b>${i.marca} ${i.modelo}</b><br><span class='text-xs'>IMEI: ${i.imei}</span>`;
                     document.getElementById('busqueda').value = i.modelo;
                     sug.innerHTML = "";
                 };
@@ -145,35 +199,8 @@
             });
         }
 
-        function abrirVendedor() { document.getElementById('loginScreen').classList.add('hidden'); document.getElementById('vendedorView').classList.remove('hidden'); }
-        function abrirJefe() { if(prompt("Clave:") === "1234") { document.getElementById('loginScreen').classList.add('hidden'); document.getElementById('jefeView').classList.remove('hidden'); } }
-
-        async function guardarTasa() {
-            const t = document.getElementById('nuevaTasa').value;
-            if(!t) return;
-            await fetch(urlScript, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ accion: "actualizarTasa", tasa: t }) });
-            alert("Tasa Actualizada");
-            location.reload();
-        }
-
-        async function cargarInventario() {
-            const btn = document.getElementById('btnCargar');
-            btn.disabled = true; btn.innerText = "ESPERE...";
-            const datos = {
-                accion: "cargarStock",
-                marca: document.getElementById('invMarca').value,
-                modelo: document.getElementById('invModelo').value,
-                imei: document.getElementById('invImei').value,
-                costo: document.getElementById('invCosto').value,
-                cantidad: document.getElementById('invCantidad').value
-            };
-            await fetch(urlScript, { method: 'POST', mode: 'no-cors', body: JSON.stringify(datos) });
-            alert("Mercadería Cargada");
-            location.reload();
-        }
-
         async function confirmarVenta() {
-            if(!window.equipoVenta || !document.getElementById('precioVenta').value) return alert("Faltan datos");
+            if(!window.equipoVenta || !document.getElementById('precioVenta').value) return alert("⚠️ Selecciona equipo y precio");
             const btn = document.getElementById('btnVenta');
             btn.disabled = true; btn.innerText = "REGISTRANDO...";
             
@@ -188,9 +215,14 @@
                 tasaUsada: window.tasaGlobal,
                 vendedor: "Web"
             };
-            await fetch(urlScript, { method: 'POST', mode: 'no-cors', body: JSON.stringify(datos) });
-            alert("Venta Exitosa");
-            location.reload();
+            try {
+                await fetch(urlScript, { method: 'POST', mode: 'no-cors', body: JSON.stringify(datos) });
+                alert("✅ Venta realizada con éxito");
+                location.reload();
+            } catch (e) {
+                alert("Error al registrar");
+                btn.disabled = false;
+            }
         }
     </script>
 </body>
