@@ -108,6 +108,69 @@
         }
 
         // Aquí irían las funciones registrarVenta() y cargarInventario() usando fetch
-    </script>
+    <const urlScript = "TU_URL_DE_APPS_SCRIPT_AQUÍ"; // PEGA AQUÍ TU URL NUEVA
+
+function abrirVendedor() {
+    document.getElementById('loginScreen').classList.add('hidden');
+    document.getElementById('vendedorView').classList.remove('hidden');
+}
+
+function abrirJefe() {
+    let p = prompt("Clave de Jefe:");
+    if(p === "1234") {
+        document.getElementById('loginScreen').classList.add('hidden');
+        document.getElementById('jefeView').classList.remove('hidden');
+    } else {
+        alert("Clave incorrecta");
+    }
+}
+
+// FUNCIÓN PARA QUE EL JEFE CARGUE INVENTARIO
+async function cargarInventario() {
+    const marca = document.getElementById('invMarca').value;
+    const modelo = document.getElementById('invModelo').value;
+    const imei = document.getElementById('invImei').value;
+    const costo = document.getElementById('invCosto').value;
+
+    if(!marca || !modelo || !imei || !costo) return alert("Completa todos los campos");
+
+    const btn = event.target;
+    btn.disabled = true;
+    btn.innerText = "CARGANDO...";
+
+    const datos = { accion: "cargarStock", marca, modelo, imei, costo };
+
+    try {
+        await fetch(urlScript, { method: 'POST', mode: 'no-cors', body: JSON.stringify(datos) });
+        alert("✅ EQUIPO GUARDADO EN INVENTARIO");
+        document.getElementById('invMarca').value = "";
+        document.getElementById('invModelo').value = "";
+        document.getElementById('invImei').value = "";
+        document.getElementById('invCosto').value = "";
+    } catch (e) {
+        alert("Error: " + e);
+    } finally {
+        btn.disabled = false;
+        btn.innerText = "CARGAR AL STOCK";
+    }
+}
+
+// FUNCIÓN PARA ACTUALIZAR EL DÓLAR
+async function guardarTasa() {
+    const tasa = document.getElementById('nuevaTasa').value;
+    if(!tasa) return alert("Ingresa un valor");
+
+    try {
+        await fetch(urlScript, { 
+            method: 'POST', 
+            mode: 'no-cors', 
+            body: JSON.stringify({ accion: "actualizarTasa", tasa: tasa }) 
+        });
+        alert("✅ TASA ACTUALIZADA");
+        location.reload();
+    } catch (e) {
+        alert("Error al actualizar tasa");
+    }
+}>
 </body>
 </html>
