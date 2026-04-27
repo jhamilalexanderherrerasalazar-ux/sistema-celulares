@@ -59,7 +59,24 @@
         </div>
 
         <div class="bg-slate-800 p-4 rounded-2xl border border-blue-500/30">
-            <h3 class="text-blue-400 text-xs font-bold mb-4 uppercase text-center">Ingreso de Mercadería</h3>
+            <div class="bg-slate-800 p-4 rounded-2xl border border-blue-500/30">
+    <h3 class="text-blue-400 text-xs font-bold mb-4 uppercase text-center">Registro Rápido con Foto</h3>
+    <div class="grid grid-cols-2 gap-3 text-slate-900">
+        <input type="text" id="invMarca" class="p-3 rounded-xl bg-white text-sm" placeholder="Marca (Ej: Xiaomi)">
+        <input type="text" id="invModelo" class="p-3 rounded-xl bg-white text-sm" placeholder="Modelo (Ej: Note 13)">
+        <input type="number" id="invCosto" class="p-3 rounded-xl bg-white text-sm" placeholder="Costo Unit $">
+        <input type="number" id="invCantidad" class="p-3 rounded-xl bg-slate-200 font-bold" value="1">
+        
+        <div class="col-span-2 space-y-2">
+            <button onclick="document.getElementById('inputFoto').click()" class="w-full bg-slate-700 text-white p-3 rounded-xl text-xs font-bold border-2 border-dashed border-slate-500">
+                <i class="fas fa-camera mr-2"></i> TOMAR FOTO DEL LOTE / EQUIPO
+            </button>
+            <input type="file" id="inputFoto" accept="image/*" capture="environment" class="hidden">
+            <p id="statusFoto" class="text-[10px] text-green-400 text-center hidden italic">Foto lista para subir</p>
+        </div>
+    </div>
+    <button onclick="cargarInventario()" id="btnCargar" class="w-full bg-blue-600 mt-4 p-4 rounded-2xl font-bold hover:bg-blue-700">CARGAR STOCK AHORA</button>
+</div>
             <div class="grid grid-cols-2 gap-3">
                 <input type="text" id="invMarca" class="p-3 rounded-xl bg-white text-slate-900 text-sm" placeholder="Marca">
                 <input type="text" id="invModelo" class="p-3 rounded-xl bg-white text-slate-900 text-sm" placeholder="Modelo">
@@ -73,7 +90,7 @@
 
     <script>
         // PEGA AQUÍ TU NUEVO LINK DE GOOGLE
-        const urlScript = "https://script.google.com/macros/s/AKfycby97ilPPhR3dqTMtTfTijK6nXUvrKjk2Lwn5o6FmD8QMl3Yo1CRg6N0stpM9aCvaNRx/exec";
+        const urlScript = "https://script.google.com/macros/s/AKfycby2DXgw5XKfK5cM0jjfFJmalyUkA8vOd6vj4PQQdetUj1z692Gnrtbg84ofjGygIkUP/exec";
         
         let stockReal = [];
         let monedaActual = 'USD';
