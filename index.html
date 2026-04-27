@@ -63,52 +63,8 @@
     </div>
 
     <script>
-        const urlScript = "https://script.google.com/macros/s/AKfycby0b7Nii52CzKkrO5C-waVIYdchxF9OmETbGC76Vrn_hU9m_AwELac_hrpg7Magk9ir/exec"; // REEMPLAZAR ESTO
-        let inventarioLocal = [];
-        let tasaActual = 0;
-        let equipoSeleccionado = null;
 
-        // Al iniciar, cargar datos de Google
-        window.onload = async () => {
-            // Esto es una simulación simplificada para no complicar el código
-            // En producción aquí llamaríamos a obtenerInventario() de Google
-            tasaActual = 12.50; // Valor inicial
-            document.getElementById('tasaDia').innerText = "Tasa del día: 1$ = " + tasaActual + " Bs";
-        };
-
-        function buscarStock() {
-            // Aquí iría la lógica para filtrar inventarioLocal
-            // Por ahora, para que veas el efecto, simularemos una lista
-            const busq = document.getElementById('busqueda').value.toLowerCase();
-            const sugerencias = document.getElementById('listaSugerencias');
-            if(busq.length < 2) { sugerencias.innerHTML = ""; return; }
-            
-            sugerencias.innerHTML = `<div onclick="seleccionar('Samsung S24', '123456789', 800)" class="p-2 border-b text-slate-800 cursor-pointer hover:bg-blue-100">Samsung S24 (IMEI: 123456789)</div>`;
-        }
-
-        function seleccionar(modelo, imei, costo) {
-            equipoSeleccionado = {modelo, imei, costo};
-            document.getElementById('detallesEquipo').innerHTML = `<b>${modelo}</b><br>IMEI: ${imei}`;
-            document.getElementById('listaSugerencias').innerHTML = "";
-            document.getElementById('busqueda').value = modelo;
-        }
-
-        document.getElementById('precioVenta').oninput = function() {
-            let val = this.value;
-            document.getElementById('calcBs').innerText = "Total en Bs: " + (val * tasaActual).toFixed(2);
-        };
-
-        function abrirVendedor() { document.getElementById('loginScreen').classList.add('hidden'); document.getElementById('vendedorView').classList.remove('hidden'); }
-        function abrirJefe() { 
-            let p = prompt("Clave:"); 
-            if(p==="1234") {
-                document.getElementById('loginScreen').classList.add('hidden'); 
-                document.getElementById('jefeView').classList.remove('hidden'); 
-            }
-        }
-
-        // Aquí irían las funciones registrarVenta() y cargarInventario() usando fetch
-    <const urlScript = "TU_URL_DE_APPS_SCRIPT_AQUÍ"; // PEGA AQUÍ TU URL NUEVA
+        <const urlScript = "https://script.google.com/macros/s/AKfycbxhkJDrih2ET9ldQ0e7J5oqH9pczET6t7UaY-Em8xcQ4W3iJv0c6pQP0o_fkbZyHdrU/exec"; // PEGA AQUÍ TU URL NUEVA
 
 function abrirVendedor() {
     document.getElementById('loginScreen').classList.add('hidden');
