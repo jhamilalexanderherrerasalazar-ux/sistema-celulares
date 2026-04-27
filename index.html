@@ -66,7 +66,7 @@
     </div>
 
     <script>
-        const urlScript = "https://script.google.com/macros/s/AKfycbyL88ihquLG2o0SeYRYUJVQSTUkH-evbYiAE2DWPiqcAsRVEMeepU4TU_z88QaVW9LQ/exec";
+        const urlScript = "https://script.google.com/macros/s/AKfycbyTTNUAcLHY5eXS4rbwDwUj4ryhn_4kFv4kwYiU_GSoBwJ-TultYRvauZ8-Ce70ujak/exec";
         let stockReal = []; 
 
         window.onload = async () => {
@@ -197,6 +197,115 @@
                 btn.innerText = "VENDER AHORA";
             }
         }
+        <div class="bg-slate-800 p-4 rounded-xl border border-blue-500/50 shadow-lg text-left">
+    <h3 class="text-blue-400 font-bold mb-4 uppercase text-xs">Ingreso Masivo de Mercadería</h3>
+    <div class="grid grid-cols-2 gap-3">
+        <input type="text" id="invMarca" class="p-2 rounded-lg bg-slate-700 border border-slate-600 text-white" placeholder="Marca">
+        <input type="text" id="invModelo" class="p-2 rounded-lg bg-slate-700 border border-slate-600 text-white" placeholder="Modelo">
+        <input type="text" id="invImei" class="p-2 rounded-lg bg-slate-700 border border-slate-600 text-white" placeholder="IMEI (Opcional si es masivo)">
+        <input type="number" id="invCosto" class="p-2 rounded-lg bg-slate-700 border border-slate-600 text-white" placeholder="Costo Unit. $">
+        <input type="number" id="invCantidad" class="p-2 rounded-lg bg-slate-700 border border-slate-600 text-white col-span-2" placeholder="CANTIDAD DE EQUIPOS A INGRESAR" value="1">
+    </div>
+    <button onclick="cargarInventario()" id="btnCargar" class="w-full bg-blue-600 mt-4 p-3 rounded-lg font-bold shadow-lg hover:bg-blue-700">CARGAR AL STOCK</button>
+</div>
+
+<div id="vendedorView" class="hidden p-4 max-w-md mx-auto">
+    <h2 class="text-xl font-bold mb-4 text-green-400 font-bold">Venta Mayorista</h2>
+    <div class="bg-white text-slate-900 p-4 rounded-xl space-y-4 shadow-2xl">
+        <input type="text" id="busqueda" onkeyup="buscarStock()" class="w-full border-2 p-2 rounded-lg" placeholder="Buscar equipo...">
+        <div id="listaSugerencias" class="bg-gray-100 max-h-40 overflow-y-auto"></div>
+        
+        <div class="p-3 bg-blue-50 rounded-lg text-center border border-blue-200">
+            <p id="detallesEquipo" class="text-xs text-gray-600 font-bold">Selecciona de la lista</p>
+        </div>
+
+        <div class="flex gap-2">
+            <button onclick="setMoneda('USD')" id="btnUSD" class="flex-1 p-2 rounded-lg font-bold bg-green-600 text-white border-2 border-green-700">$ USD</button>
+            <button onclick="setMoneda('BS')" id="btnBS" class="flex-1 p-2 rounded-lg font-bold bg-gray-200 text-gray-700 border-2 border-gray-300">Bs (Bolivianos)</button>
+        </div>
+
+        <input type="number" id="precioVenta" oninput="calcularTotal()" class="w-full border-2 p-3 rounded-lg text-xl font-bold text-center" placeholder="MONTO A COBRAR">
+        
+        <div class="bg-slate-100 p-3 rounded-lg flex justify-between items-center font-bold">
+            <span class="text-xs text-gray-500 uppercase">Equivalente:</span>
+            <span id="labelEquivalente" class="text-blue-600">0.00</span>
+        </div>
+
+        <button onclick="confirmarVenta()" id="btnVenta" class="w-full bg-green-600 text-white p-4 rounded-xl font-bold shadow-lg">FINALIZAR VENTA</button>
+        <button onclick="location.reload()" class="w-full text-gray-400 text-xs">Volver</button>
+    </div>
+</div>
+
+<script>
+    let monedaActual = 'USD';
+
+    function setMoneda(m) {
+        monedaActual = m;
+        document.getElementById('btnUSD').className = m === 'USD' ? 'flex-1 p-2 rounded-lg font-bold bg-green-600 text-white border-2 border-green-700' : 'flex-1 p-2 rounded-lg font-bold bg-gray-200 text-gray-700 border-2 border-gray-300';
+        document.getElementById('btnBS').className = m === 'BS' ? 'flex-1 p-2 rounded-lg font-bold bg-blue-600 text-white border-2 border-blue-700' : 'flex-1 p-2 rounded-lg font-bold bg-gray-200 text-gray-700 border-2 border-gray-300';
+        calcularTotal();
+    }
+
+    function calcularTotal() {
+        const monto = document.getElementById('precioVenta').value;
+        const label = document.getElementById('labelEquivalente');
+        if(!monto) return;
+        
+        if(monedaActual === 'USD') {
+            label.innerText = (monto * window.tasaGlobal).toFixed(2) + " Bs";
+        } else {
+            label.innerText = (monto / window.tasaGlobal).toFixed(2) + " $ USD";
+        }
+    }
+
+    async function cargarInventario() {
+        const marca = document.getElementById('invMarca').value;
+        const modelo = document.getElementById('invModelo').value;
+        const imei = document.getElementById('invImei').value;
+        const costo = document.getElementById('invCosto').value;
+        const cantidad = document.getElementById('invCantidad').value;
+
+        if(!marca || !modelo || !costo) return alert("Faltan datos");
+        
+        const btn = document.getElementById('btnCargar');
+        btn.disabled = true; btn.innerText = "CARGANDO " + cantidad + " EQUIPOS...";
+
+        try {
+            await fetch(urlScript, { 
+                method: 'POST', 
+                mode: 'no-cors', 
+                body: JSON.stringify({ accion: "cargarStock", marca, modelo, imei, costo, cantidad }) 
+            });
+            alert("✅ " + cantidad + " EQUIPOS CARGADOS AL STOCK");
+            location.reload();
+        } catch (e) { alert("Error"); btn.disabled = false; }
+    }
+
+    async function confirmarVenta() {
+        const monto = document.getElementById('precioVenta').value;
+        if(!window.equipoVenta || !monto) return alert("Completa los datos");
+
+        let pUSD = monedaActual === 'USD' ? monto : (monto / window.tasaGlobal);
+        let pBS = monedaActual === 'BS' ? monto : (monto * window.tasaGlobal);
+
+        const datos = {
+            accion: "registrarVenta",
+            modelo: window.equipoVenta.modelo,
+            imei: window.equipoVenta.imei,
+            costo: window.equipoVenta.costo,
+            precioUsd: parseFloat(pUSD).toFixed(2),
+            precioBs: parseFloat(pBS).toFixed(2),
+            tasaUsada: window.tasaGlobal,
+            vendedor: "Vendedor Web"
+        };
+
+        try {
+            await fetch(urlScript, { method: 'POST', mode: 'no-cors', body: JSON.stringify(datos) });
+            alert("✅ VENTA REGISTRADA");
+            location.reload();
+        } catch (e) { alert("Error"); }
+    }
+</script>
     </script>
 </body>
 </html>
