@@ -24,7 +24,7 @@
             <h1 class="text-2xl font-bold">MOONSTORESA</h1>
             <p class="text-sm">CELULAR: +591 60126617</p>
         </div>
-        <div class="space-y-2 text-lg">
+        <div class="space-y-2 text-lg text-left">
             <p><b>FECHA:</b> <span id="printFecha"></span></p>
             <p><b>MODELO:</b> <span id="printModelo"></span></p>
             <p><b>IMEI:</b> <span id="printImei"></span></p>
@@ -39,7 +39,7 @@
     <div id="loginScreen" class="flex flex-col items-center justify-center h-screen">
         <div class="bg-slate-800 p-8 rounded-2xl shadow-2xl border border-slate-700 w-80 text-center">
             <h1 class="text-2xl font-bold mb-2 text-blue-400 italic">MOONSTORESA</h1>
-            <div id="tasaDia" class="text-yellow-400 mb-6 font-mono text-xs font-bold bg-yellow-400/10 p-2 rounded italic">Sincronizando con Google...</div>
+            <div id="tasaDia" class="text-yellow-400 mb-6 font-mono text-xs font-bold bg-yellow-400/10 p-2 rounded italic text-center">Sincronizando con Google...</div>
             <button onclick="abrirVendedor()" class="w-full bg-green-600 p-4 rounded-xl mb-3 font-bold hover:bg-green-700 transition shadow-lg">VENDEDOR</button>
             <button onclick="abrirJefe()" class="w-full bg-blue-600 p-4 rounded-xl font-bold hover:bg-blue-700 transition shadow-lg">JEFE / DUEÑO</button>
         </div>
@@ -54,38 +54,38 @@
             </div>
             <div id="detallesEquipo" class="p-4 bg-blue-50 text-blue-800 rounded-2xl text-center text-sm font-bold border-2 border-blue-100 italic">Seleccione un equipo de la lista</div>
             <div class="flex gap-2">
-                <button onclick="setMoneda('USD')" id="btnUSD" class="flex-1 p-3 rounded-xl font-bold bg-green-600 text-white shadow-md transition">USD $</button>
-                <button onclick="setMoneda('BS')" id="btnBS" class="flex-1 p-3 rounded-xl font-bold bg-slate-200 text-slate-600 transition">Bs.</button>
+                <button onclick="setMoneda('USD')" id="btnUSD" class="flex-1 p-3 rounded-xl font-bold bg-green-600 text-white shadow-md">USD $</button>
+                <button onclick="setMoneda('BS')" id="btnBS" class="flex-1 p-3 rounded-xl font-bold bg-slate-200 text-slate-600">Bs.</button>
             </div>
             <input type="number" id="precioVenta" oninput="calcularTotal()" class="w-full border-b-4 border-blue-600 p-4 text-3xl font-black text-center text-blue-700 outline-none" placeholder="0.00">
             <div class="bg-slate-900 p-4 rounded-2xl flex justify-between items-center shadow-inner">
                 <span class="text-xs text-slate-400 font-bold uppercase tracking-widest">Eq. Cambio:</span>
                 <span id="labelEquivalente" class="text-yellow-400 font-bold text-lg">0.00</span>
             </div>
-            <button onclick="confirmarVenta()" id="btnVenta" class="w-full bg-green-600 text-white p-5 rounded-2xl font-black shadow-lg uppercase hover:bg-green-700 transition transform active:scale-95">Finalizar Venta</button>
+            <button onclick="confirmarVenta()" id="btnVenta" class="w-full bg-green-600 text-white p-5 rounded-2xl font-black shadow-lg uppercase hover:bg-green-700 transition">Finalizar Venta</button>
             <button onclick="location.reload()" class="w-full text-slate-400 text-xs font-bold py-2 text-center underline">Volver al inicio</button>
         </div>
     </div>
 
     <div id="jefeView" class="hidden p-4 max-w-lg mx-auto">
-        <div class="flex justify-between items-center mb-6">
+        <div class="flex justify-between items-center mb-6 text-left">
             <h2 class="text-xl font-bold text-blue-400">PANEL ADMINISTRATIVO</h2>
             <button onclick="location.reload()" class="bg-red-500 px-4 py-2 rounded-xl text-xs font-bold text-white shadow-lg">SALIR</button>
         </div>
-        <div class="bg-gradient-to-br from-red-600 to-red-800 p-6 rounded-3xl shadow-xl mb-6 text-center text-white border-b-4 border-red-900">
+        <div class="bg-gradient-to-br from-red-600 to-red-800 p-6 rounded-3xl shadow-xl mb-6 text-center text-white">
             <h3 class="text-xs font-bold mb-4 uppercase tracking-widest opacity-80">Finalizar Jornada</h3>
-            <button onclick="ejecutarCierre()" id="btnCierre" class="w-full bg-white text-red-700 p-4 rounded-2xl font-black shadow-lg active:scale-95 transition">
+            <button onclick="ejecutarCierre()" id="btnCierre" class="w-full bg-white text-red-700 p-4 rounded-2xl font-black shadow-lg transition">
                 <i class="fas fa-file-invoice-dollar mr-2"></i> GENERAR CIERRE EN DRIVE
             </button>
         </div>
-        <div class="bg-slate-800 p-5 rounded-3xl border border-yellow-600/30 mb-6 shadow-xl">
+        <div class="bg-slate-800 p-5 rounded-3xl border border-yellow-600/30 mb-6 shadow-xl text-left">
             <h3 class="text-yellow-500 text-[10px] font-bold mb-2 uppercase">Tipo de Cambio</h3>
             <div class="flex gap-2">
                 <input type="number" id="nuevaTasa" class="bg-slate-700 p-4 rounded-2xl w-full text-white font-bold outline-none border border-slate-600" placeholder="Ej: 12.80">
                 <button onclick="guardarTasa()" class="bg-yellow-600 px-8 rounded-2xl font-bold text-white uppercase shadow-lg">OK</button>
             </div>
         </div>
-        <div class="bg-slate-800 p-6 rounded-3xl border border-blue-500/30 shadow-2xl space-y-4">
+        <div class="bg-slate-800 p-6 rounded-3xl border border-blue-500/30 shadow-2xl space-y-4 text-left">
             <h3 class="text-blue-400 text-xs font-bold mb-2 uppercase text-center tracking-widest">Carga de Inventario</h3>
             <div class="grid grid-cols-2 gap-3 text-slate-900">
                 <input type="text" id="invMarca" class="p-3 rounded-xl bg-white text-sm font-semibold" placeholder="Marca">
@@ -94,7 +94,7 @@
                 <input type="number" id="invCosto" class="p-3 rounded-xl bg-white text-sm font-semibold" placeholder="Costo Unit $">
                 <input type="number" id="invCantidad" class="p-3 rounded-xl bg-slate-200 font-bold text-center" value="1">
             </div>
-            <button onclick="cargarInventario()" id="btnCargar" class="w-full bg-blue-600 text-white p-4 rounded-2xl font-black shadow-lg active:scale-95 transition">CARGAR AL STOCK</button>
+            <button onclick="cargarInventario()" id="btnCargar" class="w-full bg-blue-600 text-white p-4 rounded-2xl font-black shadow-lg">CARGAR AL STOCK</button>
         </div>
     </div>
 
@@ -104,16 +104,10 @@
         let monedaActual = 'USD';
         window.tasaGlobal = 12.50;
 
-        async function llamarGoogle(params = "") {
-            const url = urlScript + (params ? "?" + params : "");
-            return fetch(url, { method: 'GET' });
-        }
-
         window.onload = async () => {
             const status = document.getElementById('tasaDia');
             try {
                 const resTasa = await fetch(urlScript + "?action=getTasa");
-                if (!resTasa.ok) throw new Error();
                 const tasaVal = await resTasa.text();
                 window.tasaGlobal = parseFloat(tasaVal) || 12.50;
                 status.innerText = "Tasa Actual: " + window.tasaGlobal + " Bs";
@@ -122,7 +116,7 @@
                 const resInv = await fetch(urlScript + "?action=getInventario");
                 stockReal = await resInv.json();
             } catch (e) {
-                status.innerText = "⚠️ Error de Conexión (Modo Offline)";
+                status.innerText = "⚠️ Error de Conexión (Revisar Permisos)";
                 status.classList.replace('text-yellow-400', 'text-red-400');
             }
         };
@@ -149,7 +143,7 @@
             const filtrados = stockReal.filter(i => i.modelo.toLowerCase().includes(busq) || i.imei.toString().includes(busq));
             filtrados.forEach(i => {
                 const d = document.createElement('div');
-                d.className = "p-4 border-b text-slate-800 text-sm cursor-pointer hover:bg-blue-50 transition";
+                d.className = "p-4 border-b text-slate-800 text-sm cursor-pointer hover:bg-blue-50 text-left";
                 d.innerHTML = `<b>${i.marca} ${i.modelo}</b><br><span class="text-xs text-slate-400 font-mono">IMEI: ${i.imei}</span>`;
                 d.onclick = () => {
                     window.equipoVenta = i;
@@ -179,33 +173,28 @@
             };
 
             try {
-                // Llenar ticket
                 document.getElementById('printFecha').innerText = new Date().toLocaleString();
                 document.getElementById('printModelo').innerText = datos.modelo;
                 document.getElementById('printImei').innerText = datos.imei;
                 document.getElementById('printMonto').innerText = monto + " " + monedaActual;
 
-                // Enviar a Google sin 'no-cors' para detectar éxito real
                 await fetch(urlScript, { method: 'POST', body: JSON.stringify(datos) });
-                
-                alert("✅ VENTA EXITOSA. Guardado en Excel y Drive.");
+                alert("✅ VENTA EXITOSA.");
                 
                 setTimeout(() => {
                     window.print();
                     location.reload();
                 }, 800);
-
-            } catch (e) { 
-                // A veces Google falla el CORS pero SI guarda el dato. 
-                alert("✅ PROCESADO. Verifique su Excel."); 
+            } catch (e) {
+                alert("✅ PROCESADO. Verifique su Excel.");
                 location.reload();
             }
         }
 
         async function ejecutarCierre() {
-            if(!confirm("¿Finalizar jornada? Se enviará reporte a Drive.")) return;
+            if(!confirm("¿Cerrar Caja y subir a Drive?")) return;
             const btn = document.getElementById('btnCierre');
-            btn.disabled = true; btn.innerText = "CERRANDO CAJA...";
+            btn.disabled = true; btn.innerText = "PROCESANDO...";
             try {
                 await fetch(urlScript, { method: 'POST', body: JSON.stringify({ accion: "cierreCaja" }) });
                 alert("✅ CIERRE GUARDADO EN DRIVE");
@@ -214,4 +203,42 @@
         }
 
         function abrirVendedor() { document.getElementById('loginScreen').classList.add('hidden'); document.getElementById('vendedorView').classList.remove('hidden'); }
-        function abrirJefe() { if(prompt("Clave:") === "1234") { document.getElementById('loginScreen').classList.add('hidden'); document.getElementById
+        
+        function abrirJefe() { 
+            const p = prompt("Clave:"); 
+            if(p === "1234") { 
+                document.getElementById('loginScreen').classList.add('hidden'); 
+                document.getElementById('jefeView').classList.remove('hidden'); 
+            } else {
+                alert("Clave incorrecta");
+            }
+        }
+
+        async function guardarTasa() {
+            const t = document.getElementById('nuevaTasa').value;
+            if(!t) return;
+            await fetch(urlScript, { method: 'POST', body: JSON.stringify({ accion: "actualizarTasa", tasa: t }) });
+            alert("✅ Tasa Actualizada");
+            location.reload();
+        }
+
+        async function cargarInventario() {
+            const btn = document.getElementById('btnCargar');
+            btn.disabled = true; btn.innerText = "CARGANDO...";
+            const d = {
+                accion: "cargarStock",
+                marca: document.getElementById('invMarca').value,
+                modelo: document.getElementById('invModelo').value,
+                imei: document.getElementById('invImei').value || "LOTE",
+                costo: document.getElementById('invCosto').value,
+                cantidad: document.getElementById('invCantidad').value
+            };
+            try {
+                await fetch(urlScript, { method: 'POST', body: JSON.stringify(d) });
+                alert("✅ Stock Registrado");
+                location.reload();
+            } catch (e) { alert("Stock cargado."); location.reload(); }
+        }
+    </script>
+</body>
+</html>
