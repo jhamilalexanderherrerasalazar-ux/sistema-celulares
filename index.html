@@ -169,4 +169,47 @@
         }
 
         async function cargarInventario() {
-            const marca = document.getElementById
+            const marca = document.getElementById('invMarca').value;
+            const modelo = document.getElementById('invModelo').value;
+            const imei = document.getElementById('invImei').value;
+            const costo = document.getElementById('invCosto').value;
+            const cantidad = document.getElementById('invCantidad').value;
+            if(!marca || !modelo || !costo) return alert("Faltan datos");
+            
+            const btn = document.getElementById('btnCargar');
+            btn.disabled = true; btn.innerText = "CARGANDO...";
+            try {
+                await fetch(urlScript, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ accion: "cargarStock", marca, modelo, imei, costo, cantidad }) });
+                alert("✅ STOCK CARGADO");
+                location.reload();
+            } catch (e) { alert("Error"); btn.disabled = false; }
+        }
+
+        async function confirmarVenta() {
+            const monto = document.getElementById('precioVenta').value;
+            if(!window.equipoVenta || !monto) return alert("Faltan datos de venta");
+            
+            let pUSD = monedaActual === 'USD' ? monto : (monto / window.tasaGlobal);
+            let pBS = monedaActual === 'BS' ? monto : (monto * window.tasaGlobal);
+
+            const btn = document.getElementById('btnVenta');
+            btn.disabled = true; btn.innerText = "PROCESANDO...";
+
+            try {
+                await fetch(urlScript, { method: 'POST', mode: 'no-cors', body: JSON.stringify({
+                    accion: "registrarVenta",
+                    modelo: window.equipoVenta.modelo,
+                    imei: window.equipoVenta.imei,
+                    costo: window.equipoVenta.costo,
+                    precioUsd: parseFloat(pUSD).toFixed(2),
+                    precioBs: parseFloat(pBS).toFixed(2),
+                    tasaUsada: window.tasaGlobal,
+                    vendedor: "Vendedor Web"
+                }) });
+                alert("✅ VENTA EXITOSA");
+                location.reload();
+            } catch (e) { alert("Error"); btn.disabled = false; }
+        }
+    </script>
+</body>
+</html>
