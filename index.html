@@ -19,12 +19,12 @@
 </head>
 <body class="bg-slate-900 text-white font-sans">
 
-    <div id="areaImpresion" class="hidden text-black p-8 font-mono bg-white">
+    <div id="areaImpresion" class="hidden text-black p-8 font-mono bg-white text-left">
         <div class="text-center border-b-2 border-dashed border-black pb-4 mb-4">
             <h1 class="text-2xl font-bold">MOONSTORESA</h1>
             <p class="text-sm">CELULAR: +591 60126617</p>
         </div>
-        <div class="space-y-2 text-lg text-left">
+        <div class="space-y-2 text-lg">
             <p><b>FECHA:</b> <span id="printFecha"></span></p>
             <p><b>MODELO:</b> <span id="printModelo"></span></p>
             <p><b>IMEI:</b> <span id="printImei"></span></p>
@@ -38,7 +38,7 @@
 
     <div id="loginScreen" class="flex flex-col items-center justify-center h-screen">
         <div class="bg-slate-800 p-8 rounded-2xl shadow-2xl border border-slate-700 w-80 text-center">
-            <h1 class="text-2xl font-bold mb-2 text-blue-400 italic">MOONSTORESA</h1>
+            <h1 class="text-2xl font-bold mb-2 text-blue-400 italic italic">MOONSTORESA</h1>
             <div id="tasaDia" class="text-yellow-400 mb-6 font-mono text-xs font-bold bg-yellow-400/10 p-2 rounded italic text-center">Sincronizando con Google...</div>
             <button onclick="abrirVendedor()" class="w-full bg-green-600 p-4 rounded-xl mb-3 font-bold hover:bg-green-700 transition shadow-lg">VENDEDOR</button>
             <button onclick="abrirJefe()" class="w-full bg-blue-600 p-4 rounded-xl font-bold hover:bg-blue-700 transition shadow-lg">JEFE / DUEÑO</button>
@@ -52,7 +52,7 @@
                 <input type="text" id="busqueda" onkeyup="buscarStock()" class="w-full border-2 p-3 rounded-xl outline-none focus:border-green-500 bg-slate-50" placeholder="🔍 Buscar por modelo o IMEI...">
                 <div id="listaSugerencias" class="absolute z-10 w-full bg-white max-h-60 overflow-y-auto rounded-xl shadow-xl border mt-1"></div>
             </div>
-            <div id="detallesEquipo" class="p-4 bg-blue-50 text-blue-800 rounded-2xl text-center text-sm font-bold border-2 border-blue-100 italic">Seleccione un equipo de la lista</div>
+            <div id="detallesEquipo" class="p-4 bg-blue-50 text-blue-800 rounded-2xl text-center text-sm font-bold border-2 border-blue-100 italic text-left">Seleccione un equipo de la lista</div>
             <div class="flex gap-2">
                 <button onclick="setMoneda('USD')" id="btnUSD" class="flex-1 p-3 rounded-xl font-bold bg-green-600 text-white shadow-md">USD $</button>
                 <button onclick="setMoneda('BS')" id="btnBS" class="flex-1 p-3 rounded-xl font-bold bg-slate-200 text-slate-600">Bs.</button>
@@ -72,19 +72,22 @@
             <h2 class="text-xl font-bold text-blue-400">PANEL ADMINISTRATIVO</h2>
             <button onclick="location.reload()" class="bg-red-500 px-4 py-2 rounded-xl text-xs font-bold text-white shadow-lg">SALIR</button>
         </div>
+        
         <div class="bg-gradient-to-br from-red-600 to-red-800 p-6 rounded-3xl shadow-xl mb-6 text-center text-white">
             <h3 class="text-xs font-bold mb-4 uppercase tracking-widest opacity-80">Finalizar Jornada</h3>
             <button onclick="ejecutarCierre()" id="btnCierre" class="w-full bg-white text-red-700 p-4 rounded-2xl font-black shadow-lg transition">
                 <i class="fas fa-file-invoice-dollar mr-2"></i> GENERAR CIERRE EN DRIVE
             </button>
         </div>
-        <div class="bg-slate-800 p-5 rounded-3xl border border-yellow-600/30 mb-6 shadow-xl text-left">
+
+        <div class="bg-slate-800 p-5 rounded-3xl border border-yellow-600/30 mb-6 shadow-xl text-left text-left">
             <h3 class="text-yellow-500 text-[10px] font-bold mb-2 uppercase">Tipo de Cambio</h3>
             <div class="flex gap-2">
                 <input type="number" id="nuevaTasa" class="bg-slate-700 p-4 rounded-2xl w-full text-white font-bold outline-none border border-slate-600" placeholder="Ej: 12.80">
-                <button onclick="guardarTasa()" class="bg-yellow-600 px-8 rounded-2xl font-bold text-white uppercase shadow-lg">OK</button>
+                <button onclick="guardarTasa()" class="bg-yellow-600 px-8 rounded-2xl font-bold text-white uppercase shadow-lg text-left">OK</button>
             </div>
         </div>
+
         <div class="bg-slate-800 p-6 rounded-3xl border border-blue-500/30 shadow-2xl space-y-4 text-left">
             <h3 class="text-blue-400 text-xs font-bold mb-2 uppercase text-center tracking-widest">Carga de Inventario</h3>
             <div class="grid grid-cols-2 gap-3 text-slate-900">
@@ -94,15 +97,25 @@
                 <input type="number" id="invCosto" class="p-3 rounded-xl bg-white text-sm font-semibold" placeholder="Costo Unit $">
                 <input type="number" id="invCantidad" class="p-3 rounded-xl bg-slate-200 font-bold text-center" value="1">
             </div>
-            <button onclick="cargarInventario()" id="btnCargar" class="w-full bg-blue-600 text-white p-4 rounded-2xl font-black shadow-lg">CARGAR AL STOCK</button>
+            
+            <div class="flex flex-col items-center gap-2">
+                <button onclick="document.getElementById('inputFoto').click()" class="w-full bg-slate-700 text-white p-4 rounded-2xl border-2 border-dashed border-slate-500 text-xs font-bold hover:bg-slate-600 transition">
+                    <i class="fas fa-camera mr-2"></i> TOMAR FOTO DEL EQUIPO
+                </button>
+                <input type="file" id="inputFoto" accept="image/*" capture="environment" class="hidden" onchange="previsualizarFoto(this)">
+                <img id="vistaPrevia" class="hidden w-32 h-32 object-cover rounded-xl border-2 border-blue-500">
+            </div>
+
+            <button onclick="cargarInventario()" id="btnCargar" class="w-full bg-blue-600 text-white p-4 rounded-2xl font-black shadow-lg active:scale-95 transition">CARGAR AL STOCK</button>
         </div>
     </div>
 
     <script>
-        const urlScript = "https://script.google.com/macros/s/AKfycbz3Wd32eE38iJJ1odSmvDftWtvk2LllztL2ny1Y4Zi4Y9QDa2y0dS98IGvapJv1v6qa/exec";
+        const urlScript = "https://script.google.com/macros/s/AKfycbzl-0-ZnVjuP2mHjxx9wvx4KVD0Al6oCCSoO7YV6rmSru0xrNxYTbpELhfmpmkWAMiz/exec";
         let stockReal = [];
         let monedaActual = 'USD';
         window.tasaGlobal = 12.50;
+        let fotoBase64 = "";
 
         window.onload = async () => {
             const status = document.getElementById('tasaDia');
@@ -120,6 +133,18 @@
                 status.classList.replace('text-yellow-400', 'text-red-400');
             }
         };
+
+        function previsualizarFoto(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('vistaPrevia').src = e.target.result;
+                    document.getElementById('vistaPrevia').classList.remove('hidden');
+                    fotoBase64 = e.target.result;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
 
         function setMoneda(m) {
             monedaActual = m;
@@ -144,7 +169,7 @@
             filtrados.forEach(i => {
                 const d = document.createElement('div');
                 d.className = "p-4 border-b text-slate-800 text-sm cursor-pointer hover:bg-blue-50 text-left";
-                d.innerHTML = `<b>${i.marca} ${i.modelo}</b><br><span class="text-xs text-slate-400 font-mono">IMEI: ${i.imei}</span>`;
+                d.innerHTML = `<b>${i.marca} ${i.modelo}</b><br><span class="text-xs text-slate-400 font-mono text-left">IMEI: ${i.imei}</span>`;
                 d.onclick = () => {
                     window.equipoVenta = i;
                     document.getElementById('detallesEquipo').innerHTML = `<div class="text-blue-900 uppercase">📦 <b>${i.marca} ${i.modelo}</b><br>IMEI: ${i.imei}</div>`;
@@ -180,11 +205,7 @@
 
                 await fetch(urlScript, { method: 'POST', body: JSON.stringify(datos) });
                 alert("✅ VENTA EXITOSA.");
-                
-                setTimeout(() => {
-                    window.print();
-                    location.reload();
-                }, 800);
+                setTimeout(() => { window.print(); location.reload(); }, 800);
             } catch (e) {
                 alert("✅ PROCESADO. Verifique su Excel.");
                 location.reload();
@@ -192,14 +213,14 @@
         }
 
         async function ejecutarCierre() {
-            if(!confirm("¿Cerrar Caja y subir a Drive?")) return;
+            if(!confirm("¿Finalizar jornada? Se enviará reporte a Drive.")) return;
             const btn = document.getElementById('btnCierre');
-            btn.disabled = true; btn.innerText = "PROCESANDO...";
+            btn.disabled = true; btn.innerText = "CERRANDO CAJA...";
             try {
                 await fetch(urlScript, { method: 'POST', body: JSON.stringify({ accion: "cierreCaja" }) });
                 alert("✅ CIERRE GUARDADO EN DRIVE");
                 location.reload();
-            } catch (e) { alert("Cierre procesado."); location.reload(); }
+            } catch (e) { location.reload(); }
         }
 
         function abrirVendedor() { document.getElementById('loginScreen').classList.add('hidden'); document.getElementById('vendedorView').classList.remove('hidden'); }
@@ -209,9 +230,7 @@
             if(p === "1234") { 
                 document.getElementById('loginScreen').classList.add('hidden'); 
                 document.getElementById('jefeView').classList.remove('hidden'); 
-            } else {
-                alert("Clave incorrecta");
-            }
+            } else { alert("Clave incorrecta"); }
         }
 
         async function guardarTasa() {
@@ -224,20 +243,21 @@
 
         async function cargarInventario() {
             const btn = document.getElementById('btnCargar');
-            btn.disabled = true; btn.innerText = "CARGANDO...";
+            btn.disabled = true; btn.innerText = "SUBIENDO FOTO Y DATOS...";
             const d = {
                 accion: "cargarStock",
                 marca: document.getElementById('invMarca').value,
                 modelo: document.getElementById('invModelo').value,
                 imei: document.getElementById('invImei').value || "LOTE",
                 costo: document.getElementById('invCosto').value,
-                cantidad: document.getElementById('invCantidad').value
+                cantidad: document.getElementById('invCantidad').value,
+                fotoB64: fotoBase64
             };
             try {
                 await fetch(urlScript, { method: 'POST', body: JSON.stringify(d) });
-                alert("✅ Stock Registrado");
+                alert("✅ Stock y Foto registrados con éxito");
                 location.reload();
-            } catch (e) { alert("Stock cargado."); location.reload(); }
+            } catch (e) { location.reload(); }
         }
     </script>
 </body>
