@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>POS Mayorista - MOONSTORESA</title>
+    <title>MOONSTORESA - POS Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -18,73 +18,79 @@
 
     <div id="areaImpresion" class="hidden text-slate-900 p-4 font-mono text-xs">
         <div class="text-center border-b-2 border-dashed pb-2 mb-2">
-            <h1 class="text-lg font-bold">MOONSTORESA</h1>
-            <p>TEL: +591 60126617</p>
+            <h1 class="text-lg font-bold uppercase text-black">MOONSTORESA</h1>
+            <p class="text-black">TEL: +591 60126617</p>
         </div>
-        <div class="space-y-1">
+        <div class="space-y-1 text-black">
             <p><b>FECHA:</b> <span id="printFecha"></span></p>
             <p><b>EQUIPO:</b> <span id="printModelo"></span></p>
             <p><b>IMEI:</b> <span id="printImei"></span></p>
             <div class="border-t border-dashed pt-2 mt-2 font-bold text-sm flex justify-between">
-                <span>TOTAL PAGADO:</span>
+                <span>TOTAL:</span>
                 <span id="printMonto"></span>
             </div>
         </div>
-        <p class="mt-4 text-center italic">¡Gracias por su preferencia!</p>
+        <p class="mt-4 text-center italic text-black">Respaldo guardado en Drive</p>
     </div>
 
     <div id="loginScreen" class="flex flex-col items-center justify-center h-screen">
         <div class="bg-slate-800 p-8 rounded-2xl shadow-2xl border border-slate-700 w-80 text-center">
             <h1 class="text-2xl font-bold mb-6 text-blue-400 italic">MOONSTORESA</h1>
-            <div id="tasaDia" class="text-yellow-400 mb-4 font-mono text-sm font-bold">Conectando...</div>
-            <button onclick="abrirVendedor()" class="w-full bg-green-600 p-3 rounded-lg mb-3 font-bold hover:bg-green-700">VENDEDOR</button>
-            <button onclick="abrirJefe()" class="w-full bg-blue-600 p-3 rounded-lg font-bold hover:bg-blue-700">JEFE / DUEÑO</button>
+            <div id="tasaDia" class="text-yellow-400 mb-4 font-mono text-sm font-bold italic underline">Sincronizando...</div>
+            <button onclick="abrirVendedor()" class="w-full bg-green-600 p-4 rounded-xl mb-3 font-bold hover:bg-green-700 transition">VENDEDOR</button>
+            <button onclick="abrirJefe()" class="w-full bg-blue-600 p-4 rounded-xl font-bold hover:bg-blue-700 transition">JEFE / DUEÑO</button>
         </div>
     </div>
 
     <div id="vendedorView" class="hidden p-4 max-w-md mx-auto">
         <div class="bg-white text-slate-900 p-5 rounded-2xl shadow-2xl space-y-4">
-            <h2 class="text-xl font-black text-green-600 text-center uppercase italic">Venta Directa</h2>
-            <input type="text" id="busqueda" onkeyup="buscarStock()" class="w-full border-2 p-3 rounded-xl outline-none focus:border-green-500 shadow-sm" placeholder="🔍 Buscar equipo o imei...">
-            <div id="listaSugerencias" class="bg-slate-50 max-h-48 overflow-y-auto rounded-lg border"></div>
-            <div id="detallesEquipo" class="p-3 bg-blue-50 text-blue-800 rounded-xl text-center text-sm font-bold border-2 border-blue-100 italic">Seleccione un equipo</div>
+            <h2 class="text-xl font-black text-green-600 text-center uppercase italic">Nueva Venta</h2>
+            
+            <input type="text" id="busqueda" onkeyup="buscarStock()" class="w-full border-2 p-3 rounded-xl outline-none focus:border-green-500" placeholder="🔍 Buscar modelo o imei...">
+            <div id="listaSugerencias" class="bg-slate-50 max-h-48 overflow-y-auto rounded-lg border border-slate-200"></div>
+
+            <div id="detallesEquipo" class="p-3 bg-blue-50 text-blue-800 rounded-xl text-center text-xs font-bold border-2 border-blue-100 italic">Selecciona un equipo</div>
+
             <div class="flex gap-2">
-                <button onclick="setMoneda('USD')" id="btnUSD" class="flex-1 p-2 rounded-xl font-bold bg-green-600 text-white">$ USD</button>
+                <button onclick="setMoneda('USD')" id="btnUSD" class="flex-1 p-2 rounded-xl font-bold bg-green-600 text-white">USD $</button>
                 <button onclick="setMoneda('BS')" id="btnBS" class="flex-1 p-2 rounded-xl font-bold bg-slate-200 text-slate-600">Bs.</button>
             </div>
-            <input type="number" id="precioVenta" oninput="calcularTotal()" class="w-full border-2 p-4 rounded-2xl text-2xl font-black text-center text-blue-600" placeholder="0.00">
-            <div class="bg-slate-800 p-3 rounded-xl flex justify-between items-center">
-                <span class="text-[10px] text-slate-400 font-bold uppercase">Equivalente:</span>
+
+            <input type="number" id="precioVenta" oninput="calcularTotal()" class="w-full border-2 p-4 rounded-2xl text-2xl font-black text-center text-blue-700" placeholder="0.00">
+            
+            <div class="bg-slate-800 p-3 rounded-xl flex justify-between items-center font-mono">
+                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Eq. Cambio:</span>
                 <span id="labelEquivalente" class="text-yellow-400 font-bold">0.00</span>
             </div>
-            <button onclick="confirmarVenta()" id="btnVenta" class="w-full bg-green-600 text-white p-4 rounded-2xl font-black shadow-lg uppercase hover:bg-green-700">Finalizar Venta</button>
-            <button onclick="location.reload()" class="w-full text-slate-400 text-xs font-bold py-2 text-center underline italic">VOLVER</button>
+
+            <button onclick="confirmarVenta()" id="btnVenta" class="w-full bg-green-600 text-white p-4 rounded-2xl font-black shadow-lg uppercase hover:bg-green-700 transition">Finalizar Venta</button>
+            <button onclick="location.reload()" class="w-full text-slate-400 text-xs font-bold py-2 text-center underline">← VOLVER</button>
         </div>
     </div>
 
     <div id="jefeView" class="hidden p-4 max-w-lg mx-auto">
         <div class="flex justify-between items-center mb-6">
-            <h2 class="text-xl font-bold text-blue-400">PANEL GERENCIAL</h2>
+            <h2 class="text-xl font-bold text-blue-400 uppercase">Panel Jefe</h2>
             <button onclick="location.reload()" class="bg-red-500 px-3 py-1 rounded text-xs font-bold text-white uppercase shadow-lg">Salir</button>
         </div>
 
         <div class="bg-gradient-to-br from-red-600 to-red-900 p-5 rounded-2xl shadow-xl mb-6 text-center">
-            <h3 class="text-white text-xs font-bold mb-4 uppercase tracking-widest italic underline">Cierre de Caja Diario</h3>
+            <h3 class="text-white text-xs font-bold mb-4 uppercase tracking-widest italic">Cierre Diario (Drive)</h3>
             <button onclick="ejecutarCierre()" id="btnCierre" class="w-full bg-white text-red-600 p-4 rounded-xl font-black shadow-lg hover:bg-slate-100 transition">
-                <i class="fas fa-lock mr-2"></i> CERRAR JORNADA Y LIMPIAR
+                <i class="fas fa-cloud-upload-alt mr-2"></i> CERRAR Y SUBIR A DRIVE
             </button>
         </div>
 
         <div class="bg-slate-800 p-4 rounded-2xl border border-yellow-600/30 mb-6 shadow-xl">
-            <h3 class="text-yellow-500 text-[10px] font-bold mb-2 uppercase italic">Configurar Dólar</h3>
-            <div class="flex gap-2 text-slate-900">
-                <input type="number" id="nuevaTasa" class="bg-white p-3 rounded-xl w-full font-bold outline-none" placeholder="Ej: 12.80">
-                <button onclick="guardarTasa()" class="bg-yellow-600 px-6 rounded-xl font-bold text-white uppercase">OK</button>
+            <h3 class="text-yellow-500 text-[10px] font-bold mb-2 uppercase italic">Configurar Tasa</h3>
+            <div class="flex gap-2">
+                <input type="number" id="nuevaTasa" class="bg-white p-3 rounded-xl w-full text-slate-900 font-bold outline-none" placeholder="Ej: 12.80">
+                <button onclick="guardarTasa()" class="bg-yellow-600 px-6 rounded-xl font-bold text-white">OK</button>
             </div>
         </div>
 
         <div class="bg-slate-800 p-5 rounded-2xl border border-blue-500/30 shadow-2xl space-y-4">
-            <h3 class="text-blue-400 text-xs font-bold mb-2 uppercase text-center tracking-widest">Ingreso Rápido con Foto</h3>
+            <h3 class="text-blue-400 text-xs font-bold mb-2 uppercase text-center tracking-widest">Carga Rápida con Foto</h3>
             <div class="grid grid-cols-2 gap-3 text-slate-900">
                 <input type="text" id="invMarca" class="p-3 rounded-xl bg-white text-sm font-semibold" placeholder="Marca">
                 <input type="text" id="invModelo" class="p-3 rounded-xl bg-white text-sm font-semibold" placeholder="Modelo">
@@ -92,21 +98,20 @@
                 <input type="number" id="invCosto" class="p-3 rounded-xl bg-white text-sm font-semibold" placeholder="Costo Unit $">
                 <input type="number" id="invCantidad" class="p-3 rounded-xl bg-slate-200 font-bold text-center" value="1">
             </div>
-            
             <div class="space-y-2">
                 <button onclick="document.getElementById('inputFoto').click()" class="w-full bg-slate-700 text-white p-4 rounded-xl text-xs font-bold border-2 border-dashed border-slate-500 hover:bg-slate-600 transition">
-                    <i class="fas fa-camera mr-2 text-blue-400"></i> TOMAR FOTO DEL EQUIPO
+                    <i class="fas fa-camera mr-2 text-blue-400"></i> TOMAR FOTO EQUIPO
                 </button>
                 <input type="file" id="inputFoto" accept="image/*" capture="environment" class="hidden">
-                <p id="statusFoto" class="text-[10px] text-center hidden font-bold text-green-400">✅ FOTO CAPTURADA</p>
+                <p id="statusFoto" class="text-[10px] text-center hidden font-bold text-green-400 italic">✅ FOTO LISTA</p>
             </div>
-
             <button onclick="cargarInventario()" id="btnCargar" class="w-full bg-blue-600 text-white p-4 rounded-2xl font-black shadow-lg uppercase">Cargar al Stock</button>
         </div>
     </div>
 
     <script>
-        const urlScript = "https://script.google.com/macros/s/AKfycbyFj9TIxfCP0HnygbtPcv6PuVGHqxZID0cASXIlDmPDFY_ZB7OS3K5A7deg0fo_j5ZG/exec";
+        // CONFIGURACIÓN
+        const urlScript = "https://script.google.com/macros/s/AKfycbx8ZO-IzhzcVCpWtW93EFBKXZukbE2s2FSsZTXij_UbY7ZoZ0tE5rdCIqUueXCiJaMB/exec";
         let stockReal = [];
         let monedaActual = 'USD';
         window.tasaGlobal = 12.50;
@@ -120,10 +125,10 @@
                 document.getElementById('tasaDia').innerText = "Tasa Actual: " + window.tasaGlobal + " Bs";
                 const resInv = await fetch(urlScript + "?action=getInventario");
                 stockReal = await resInv.json();
-            } catch (e) { document.getElementById('tasaDia').innerText = "Modo Offline"; }
+            } catch (e) { document.getElementById('tasaDia').innerText = "Conexión Offline"; }
         };
 
-        // Captura de Foto
+        // --- SISTEMA DE CÁMARA ---
         document.getElementById('inputFoto').onchange = function(e) {
             if (e.target.files && e.target.files[0]) {
                 window.fotoCapturada = "Imagen Cargada ✅";
@@ -131,6 +136,7 @@
             }
         };
 
+        // --- SISTEMA DE MONEDA ---
         function setMoneda(m) {
             monedaActual = m;
             document.getElementById('btnUSD').className = m === 'USD' ? 'flex-1 p-2 rounded-xl font-bold bg-green-600 text-white shadow-md' : 'flex-1 p-2 rounded-xl font-bold bg-slate-200 text-slate-600';
@@ -145,6 +151,7 @@
             label.innerText = monedaActual === 'USD' ? (monto * window.tasaGlobal).toFixed(2) + " Bs" : (monto / window.tasaGlobal).toFixed(2) + " $ USD";
         }
 
+        // --- BUSCADOR ---
         function buscarStock() {
             const busq = document.getElementById('busqueda').value.toLowerCase();
             const sug = document.getElementById('listaSugerencias');
@@ -154,7 +161,7 @@
             filtrados.forEach(i => {
                 const d = document.createElement('div');
                 d.className = "p-3 border-b text-slate-800 text-sm cursor-pointer hover:bg-blue-50 text-left";
-                d.innerHTML = `<b>${i.marca} ${i.modelo}</b><br><span class="text-xs text-gray-400 italic">IMEI: ${i.imei}</span>`;
+                d.innerHTML = `<b>${i.marca} ${i.modelo}</b><br><span class="text-[10px] text-gray-400 italic">IMEI: ${i.imei}</span>`;
                 d.onclick = () => {
                     window.equipoVenta = i;
                     document.getElementById('detallesEquipo').innerHTML = `📦 <b>${i.marca} ${i.modelo}</b><br><span class='text-xs'>IMEI: ${i.imei}</span>`;
@@ -165,11 +172,12 @@
             });
         }
 
+        // --- ACCIONES DRIVE / EXCEL ---
         async function confirmarVenta() {
             const monto = document.getElementById('precioVenta').value;
-            if(!window.equipoVenta || !monto) return alert("Seleccione equipo y precio");
+            if(!window.equipoVenta || !monto) return alert("⚠️ Selecciona equipo y precio");
             const btn = document.getElementById('btnVenta');
-            btn.disabled = true; btn.innerText = "REGISTRANDO...";
+            btn.disabled = true; btn.innerText = "SUBIENDO A DRIVE...";
 
             const datos = {
                 accion: "registrarVenta",
@@ -177,59 +185,4 @@
                 imei: window.equipoVenta.imei,
                 costo: window.equipoVenta.costo,
                 precioUsd: monedaActual === 'USD' ? monto : (monto / window.tasaGlobal).toFixed(2),
-                precioBs: monedaActual === 'BS' ? monto : (monto * window.tasaGlobal).toFixed(2),
-                tasaUsada: window.tasaGlobal,
-                vendedor: "Web"
-            };
-
-            try {
-                await fetch(urlScript, { method: 'POST', mode: 'no-cors', body: JSON.stringify(datos) });
-                document.getElementById('printFecha').innerText = new Date().toLocaleString();
-                document.getElementById('printModelo').innerText = datos.modelo;
-                document.getElementById('printImei').innerText = datos.imei;
-                document.getElementById('printMonto').innerText = monedaActual === 'USD' ? monto + " USD" : monto + " BS";
-                alert("✅ Venta Exitosa. Presione aceptar para el Ticket.");
-                window.print();
-                location.reload();
-            } catch (e) { alert("Error"); btn.disabled = false; }
-        }
-
-        async function ejecutarCierre() {
-            if(!confirm("¿CERRAR CAJA? Se archivará todo y se borrarán las ventas del día del Excel.")) return;
-            const btn = document.getElementById('btnCierre');
-            btn.disabled = true; btn.innerText = "PROCESANDO CIERRE...";
-            try {
-                await fetch(urlScript, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ accion: "cierreCaja" }) });
-                alert("✅ CIERRE EXITOSO. Ventas archivadas y limpias.");
-                location.reload();
-            } catch (e) { alert("Error"); btn.disabled = false; }
-        }
-
-        function abrirVendedor() { document.getElementById('loginScreen').classList.add('hidden'); document.getElementById('vendedorView').classList.remove('hidden'); }
-        function abrirJefe() { if(prompt("Clave:") === "1234") { document.getElementById('loginScreen').classList.add('hidden'); document.getElementById('jefeView').classList.remove('hidden'); } }
-        async function guardarTasa() {
-            const t = document.getElementById('nuevaTasa').value;
-            if(!t) return;
-            await fetch(urlScript, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ accion: "actualizarTasa", tasa: t }) });
-            alert("✅ Tasa Actualizada");
-            location.reload();
-        }
-        async function cargarInventario() {
-            const btn = document.getElementById('btnCargar');
-            btn.disabled = true; btn.innerText = "CARGANDO...";
-            const d = {
-                accion: "cargarStock",
-                marca: document.getElementById('invMarca').value,
-                modelo: document.getElementById('invModelo').value,
-                imei: document.getElementById('invImei').value || "LOTE",
-                costo: document.getElementById('invCosto').value,
-                cantidad: document.getElementById('invCantidad').value,
-                fotoUrl: window.fotoCapturada
-            };
-            await fetch(urlScript, { method: 'POST', mode: 'no-cors', body: JSON.stringify(d) });
-            alert("✅ Stock Registrado");
-            location.reload();
-        }
-    </script>
-</body>
-</html>
+                precioBs: monedaActual === 'BS
