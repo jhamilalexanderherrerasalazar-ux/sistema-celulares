@@ -107,7 +107,40 @@
             }
         }
 
-        function registrarVenta() {
+async function registrarVenta() {
+    const btn = document.querySelector('button');
+    btn.disabled = true;
+    btn.innerText = "ENVIANDO...";
+
+    const urlScript = "https://script.google.com/macros/s/AKfycby0b7Nii52CzKkrO5C-waVIYdchxF9OmETbGC76Vrn_hU9m_AwELac_hrpg7Magk9ir/exec";
+
+    const datos = {
+        modelo: document.getElementById('modelo').value,
+        imei: document.getElementById('imei').value,
+        precio: document.getElementById('precio').value,
+        costo: 0, // Lo editaremos luego desde el panel de Jefe
+        vendedor: "Vendedor 1"
+    };
+
+    try {
+        // Usamos una técnica llamada 'fetch' para enviar los datos
+        await fetch(urlScript, {
+            method: 'POST',
+            mode: 'no-cors', // Importante para Google Scripts
+            cache: 'no-cache',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(datos)
+        });
+
+        alert("✅ ¡VENTA REGISTRADA EN EL EXCEL!");
+        document.getElementById('formVenta').reset();
+    } catch (error) {
+        alert("Error al conectar: " + error);
+    } finally {
+        btn.disabled = false;
+        btn.innerText = "CONFIRMAR VENTA";
+    }
+}
             alert("Conectando con Google Sheets... (Venta Registrada)");
             // Aquí irá la conexión que hicimos en el paso anterior
         }
