@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SISTEMA MAYORISTA V2</title>
+    <title>POS Celulares Bolivia</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -11,111 +11,103 @@
 
     <div id="loginScreen" class="flex flex-col items-center justify-center h-screen">
         <div class="bg-slate-800 p-8 rounded-2xl shadow-2xl border border-slate-700 w-80 text-center">
-            <i class="fas fa-mobile-alt text-5xl text-blue-500 mb-4"></i>
-            <h1 class="text-2xl font-bold mb-6">Acceso al Sistema</h1>
-            <button onclick="entrarComo('vendedor')" class="w-full bg-green-600 p-3 rounded-lg mb-3 hover:bg-green-700 font-bold transition">
-                <i class="fas fa-user-tag mr-2"></i> SOY VENDEDOR
-            </button>
-            <button onclick="entrarComo('jefe')" class="w-full bg-blue-600 p-3 rounded-lg hover:bg-blue-700 font-bold transition">
-                <i class="fas fa-user-tie mr-2"></i> SOY JEFE
-            </button>
+            <h1 class="text-2xl font-bold mb-6">SISTEMA POS</h1>
+            <div id="tasaDia" class="text-yellow-400 mb-4 font-mono text-sm">Cargando tasa...</div>
+            <button onclick="abrirVendedor()" class="w-full bg-green-600 p-3 rounded-lg mb-3 font-bold">VENDEDOR</button>
+            <button onclick="abrirJefe()" class="w-full bg-blue-600 p-3 rounded-lg font-bold">JEFE / DUEÑO</button>
         </div>
     </div>
 
-    <div id="vendedorView" class="hidden p-4 max-w-lg mx-auto">
-        <div class="flex justify-between items-center mb-6">
-            <h2 class="text-xl font-bold text-green-400">Nueva Venta</h2>
-            <button onclick="location.reload()" class="bg-slate-700 px-3 py-1 rounded text-sm">Cerrar</button>
-        </div>
-        <div class="bg-white text-slate-900 p-6 rounded-xl shadow-lg">
-            <div class="space-y-4">
-                <div>
-                    <label class="block font-bold mb-1">Modelo</label>
-                    <input type="text" id="modelo" class="w-full border p-2 rounded shadow-sm" placeholder="Ej: iPhone 13">
-                </div>
-                <div>
-                    <label class="block font-bold mb-1">IMEI / Serie</label>
-                    <input type="text" id="imei" class="w-full border p-2 rounded shadow-sm" placeholder="15 dígitos">
-                </div>
-                <div>
-                    <label class="block font-bold mb-1">Precio de Venta ($)</label>
-                    <input type="number" id="precio" class="w-full border p-2 rounded shadow-sm" placeholder="0.00">
-                </div>
-                <button onclick="registrarVenta()" id="btnRegistrar" class="w-full bg-green-600 text-white p-4 rounded-xl font-bold text-lg hover:bg-green-700">
-                    REGISTRAR VENTA
-                </button>
+    <div id="vendedorView" class="hidden p-4 max-w-md mx-auto">
+        <h2 class="text-xl font-bold mb-4 text-green-400">Registrar Venta</h2>
+        <div class="bg-white text-slate-900 p-4 rounded-xl space-y-4">
+            <div>
+                <label class="block text-xs font-bold text-gray-500">BUSCAR EQUIPO EN STOCK</label>
+                <input type="text" id="busqueda" onkeyup="buscarStock()" class="w-full border p-2 rounded" placeholder="Escribe marca o modelo...">
+                <div id="listaSugerencias" class="bg-gray-100 mt-1 max-h-40 overflow-y-auto rounded shadow-inner"></div>
             </div>
+            <div class="p-2 bg-blue-50 rounded border border-blue-200">
+                <p id="detallesEquipo" class="text-sm italic text-gray-600">Selecciona un equipo de la lista...</p>
+            </div>
+            <input type="number" id="precioVenta" class="w-full border p-2 rounded" placeholder="Precio Venta ($)">
+            <div id="calcBs" class="text-right text-xs font-bold text-blue-600">Total en Bs: 0.00</div>
+            <button onclick="confirmarVenta()" id="btnVenta" class="w-full bg-green-600 text-white p-3 rounded-lg font-bold">VENDER AHORA</button>
+            <button onclick="location.reload()" class="w-full text-gray-400 text-xs mt-2">Volver</button>
         </div>
     </div>
 
-    <div id="jefeView" class="hidden p-4">
+    <div id="jefeView" class="hidden p-4 max-w-2xl mx-auto">
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-xl font-bold text-blue-400">Panel de Control</h2>
-            <button onclick="location.reload()" class="bg-red-500 px-3 py-1 rounded text-sm font-bold">Cerrar Sesión</button>
+            <button onclick="location.reload()" class="bg-red-500 px-3 py-1 rounded text-xs font-bold">SALIR</button>
         </div>
-        <div class="bg-slate-800 p-6 rounded-xl border border-blue-500 text-center">
-            <p>Bienvenido, Jefe. Aquí verás tus reportes pronto.</p>
+        
+        <div class="bg-slate-800 p-4 rounded-xl border border-yellow-600/50 mb-6">
+            <h3 class="text-yellow-500 font-bold mb-2 underline">TIPO DE CAMBIO (BOLIVIA)</h3>
+            <div class="flex gap-2">
+                <input type="number" id="nuevaTasa" class="bg-slate-700 p-2 rounded w-full" placeholder="Ej: 12.80">
+                <button onclick="guardarTasa()" class="bg-yellow-600 px-4 rounded font-bold">ACTUALIZAR</button>
+            </div>
+        </div>
+
+        <div class="bg-slate-800 p-4 rounded-xl border border-blue-500/50">
+            <h3 class="text-blue-400 font-bold mb-3">INGRESAR NUEVA MERCADERÍA</h3>
+            <div class="grid grid-cols-2 gap-2 text-slate-900">
+                <input type="text" id="invMarca" class="p-2 rounded" placeholder="Marca (Samsumg, Apple)">
+                <input type="text" id="invModelo" class="p-2 rounded" placeholder="Modelo (S24, iPhone 15)">
+                <input type="text" id="invImei" class="p-2 rounded" placeholder="IMEI">
+                <input type="number" id="invCosto" class="p-2 rounded" placeholder="Costo en $">
+            </div>
+            <button onclick="cargarInventario()" class="w-full bg-blue-600 mt-4 p-3 rounded-lg font-bold">CARGAR AL STOCK</button>
         </div>
     </div>
 
     <script>
-        // CONFIGURACIÓN: PEGA AQUÍ TU URL DE GOOGLE APPS SCRIPT
-        const urlScript = "https://script.google.com/macros/s/AKfycby0b7Nii52CzKkrO5C-waVIYdchxF9OmETbGC76Vrn_hU9m_AwELac_hrpg7Magk9ir/exec";
+        const urlScript = "TU_URL_DE_APPS_SCRIPT_AQUÍ"; // REEMPLAZAR ESTO
+        let inventarioLocal = [];
+        let tasaActual = 0;
+        let equipoSeleccionado = null;
 
-        function entrarComo(rol) {
-            document.getElementById('loginScreen').classList.add('hidden');
-            if(rol === 'vendedor') {
-                document.getElementById('vendedorView').classList.remove('hidden');
-            } else {
-                let clave = prompt("Ingrese clave de Jefe:");
-                if(clave === "1234") {
-                    document.getElementById('jefeView').classList.remove('hidden');
-                } else {
-                    alert("Clave incorrecta");
-                    location.reload();
-                }
+        // Al iniciar, cargar datos de Google
+        window.onload = async () => {
+            // Esto es una simulación simplificada para no complicar el código
+            // En producción aquí llamaríamos a obtenerInventario() de Google
+            tasaActual = 12.50; // Valor inicial
+            document.getElementById('tasaDia').innerText = "Tasa del día: 1$ = " + tasaActual + " Bs";
+        };
+
+        function buscarStock() {
+            // Aquí iría la lógica para filtrar inventarioLocal
+            // Por ahora, para que veas el efecto, simularemos una lista
+            const busq = document.getElementById('busqueda').value.toLowerCase();
+            const sugerencias = document.getElementById('listaSugerencias');
+            if(busq.length < 2) { sugerencias.innerHTML = ""; return; }
+            
+            sugerencias.innerHTML = `<div onclick="seleccionar('Samsung S24', '123456789', 800)" class="p-2 border-b text-slate-800 cursor-pointer hover:bg-blue-100">Samsung S24 (IMEI: 123456789)</div>`;
+        }
+
+        function seleccionar(modelo, imei, costo) {
+            equipoSeleccionado = {modelo, imei, costo};
+            document.getElementById('detallesEquipo').innerHTML = `<b>${modelo}</b><br>IMEI: ${imei}`;
+            document.getElementById('listaSugerencias').innerHTML = "";
+            document.getElementById('busqueda').value = modelo;
+        }
+
+        document.getElementById('precioVenta').oninput = function() {
+            let val = this.value;
+            document.getElementById('calcBs').innerText = "Total en Bs: " + (val * tasaActual).toFixed(2);
+        };
+
+        function abrirVendedor() { document.getElementById('loginScreen').classList.add('hidden'); document.getElementById('vendedorView').classList.remove('hidden'); }
+        function abrirJefe() { 
+            let p = prompt("Clave:"); 
+            if(p==="1234") {
+                document.getElementById('loginScreen').classList.add('hidden'); 
+                document.getElementById('jefeView').classList.remove('hidden'); 
             }
         }
 
-        async function registrarVenta() {
-            const modelo = document.getElementById('modelo').value;
-            const imei = document.getElementById('imei').value;
-            const precio = document.getElementById('precio').value;
-
-            if(!modelo || !imei || !precio) {
-                alert("Por favor rellena todos los campos");
-                return;
-            }
-
-            const btn = document.getElementById('btnRegistrar');
-            btn.disabled = true;
-            btn.innerText = "ENVIANDO...";
-
-            const datos = {
-                modelo: modelo,
-                imei: imei,
-                precio: precio,
-                costo: 0,
-                vendedor: "Vendedor Web"
-            };
-
-            try {
-                await fetch(urlScript, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    body: JSON.stringify(datos)
-                });
-                alert("✅ Venta registrada en Google Sheets");
-                document.getElementById('modelo').value = "";
-                document.getElementById('imei').value = "";
-                document.getElementById('precio').value = "";
-            } catch (e) {
-                alert("Error: " + e);
-            } finally {
-                btn.disabled = false;
-                btn.innerText = "REGISTRAR VENTA";
-            }
-        }
+        // Aquí irían las funciones registrarVenta() y cargarInventario() usando fetch
     </script>
 </body>
 </html>
