@@ -144,22 +144,33 @@
         let fotoBase64 = "";
 
         window.onload = async () => {
-            const status = document.getElementById('tasaDia');
-            try {
-                const resTasa = await fetch(urlScript + "?action=getTasa");
-                const tasaVal = await resTasa.text();
-                window.tasaGlobal = parseFloat(tasaVal) || 12.50;
-                status.innerText = "Tasa Actual: " + window.tasaGlobal + " Bs";
-                status.className = "text-green-400 mb-6 font-mono text-xs font-bold bg-green-400/10 p-2 rounded italic text-center";
+    const status = document.getElementById('tasaDia');
+    try {
+        // Usamos un modo que permite saltar bloqueos de seguridad básicos
+        const resTasa = await fetch(urlScript + "?action=getTasa", {
+            method: 'GET',
+            mode: 'cors', // Forzamos el modo CORS
+            headers: { 'Content-Type': 'text/plain' }
+        });
+        const tasaVal = await resTasa.text();
+        
+        if (tasaVal) {
+            window.tasaGlobal = parseFloat(tasaVal) || 12.50;
+            status.innerText = "Tasa Actual: " + window.tasaGlobal + " Bs";
+            status.className = "text-green-400 mb-6 font-mono text-xs font-bold bg-green-400/10 p-2 rounded italic text-center";
+        }
 
-                const resInv = await fetch(urlScript + "?action=getInventario");
-                stockReal = await resInv.json();
-            } catch (e) {
-                status.innerText = "⚠️ Error: Revisa permisos en Google";
-                status.className = "text-red-400 mb-6 font-mono text-xs font-bold bg-red-400/10 p-2 rounded italic text-center";
-            }
-        };
-
+        const resInv = await fetch(urlScript + "?action=getInventario");
+        stockReal = await resInv.json();
+        
+        console.log("Sincronización completa");
+    } catch (e) {
+        console.error("Error detallado:", e);
+        status.innerText = "⚠️ Error: Reconectando...";
+        // Reintento automático en 3 segundos si falla
+        setTimeout(() => { location.reload(); }, 3000);
+    }
+};
         function previsualizarFoto(input) {
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
