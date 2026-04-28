@@ -19,7 +19,7 @@
         
         @media print {
             body * { visibility: hidden; }
-            #areaImpresion, #areaImpresionCierre, #areaImpresion * , #areaImpresionCierre * { visibility: visible; }
+            #areaImpresion, #areaImpresionCierre, #areaImpresion *, #areaImpresionCierre * { visibility: visible; }
             #areaImpresion, #areaImpresionCierre { position: absolute; left: 0; top: 0; width: 100%; display: block !important; }
         }
     </style>
@@ -32,21 +32,17 @@
             <p class="text-sm">TEL: +591 60126617</p>
         </div>
         <div class="linea-puntos"></div>
-        <div class="space-y-2 text-lg">
-            <p><b>FECHA:</b> <span id="printFecha"></span></p>
-            <p><b>MODELO:</b> <span id="printModelo"></span></p>
-            <p><b>IMEI:</b> <span id="printImei"></span></p>
-            <div class="linea-puntos"></div>
-            <div class="text-2xl font-bold flex justify-between">
-                <span>TOTAL:</span>
-                <span id="printMonto"></span>
+        <div id="listaItemsVenta" class="space-y-2 text-lg">
             </div>
-        </div>
         <div class="linea-puntos"></div>
-        <p class="text-center italic">¡Gracias por su compra!</p>
+        <div class="text-2xl font-bold flex justify-between">
+            <span>TOTAL:</span>
+            <span id="printMonto"></span>
+        </div>
+        <p class="text-center mt-6 italic">¡Gracias por su compra!</p>
     </div>
 
-    <div id="areaImpresionCierre" class="hidden ticket-print">
+    <div id="areaImpresionCierre" class="hidden ticket-print text-left">
         <div class="text-center">
             <h2 class="text-xl font-bold uppercase">Reporte de Cierre</h2>
             <p class="text-sm">MOONSTORESA</p>
@@ -67,28 +63,44 @@
         <div class="bg-slate-800 p-8 rounded-2xl shadow-2xl border border-slate-700 w-80 text-center">
             <h1 class="text-2xl font-bold mb-2 text-blue-400 italic">MOONSTORESA</h1>
             <div id="tasaDia" class="text-yellow-400 mb-6 font-mono text-xs font-bold bg-yellow-400/10 p-2 rounded italic text-center">Sincronizando...</div>
-            <button onclick="abrirVendedor()" class="w-full bg-green-600 p-4 rounded-xl mb-3 font-bold hover:bg-green-700 transition">VENDEDOR</button>
-            <button onclick="abrirJefe()" class="w-full bg-blue-600 p-4 rounded-xl font-bold hover:bg-blue-700 transition">JEFE / DUEÑO</button>
+            <button onclick="abrirVendedor()" class="w-full bg-green-600 p-4 rounded-xl mb-3 font-bold hover:bg-green-700 transition shadow-lg">VENDEDOR</button>
+            <button onclick="abrirJefe()" class="w-full bg-blue-600 p-4 rounded-xl font-bold hover:bg-blue-700 transition shadow-lg">JEFE / DUEÑO</button>
         </div>
     </div>
 
     <div id="vendedorView" class="hidden p-4 max-w-md mx-auto text-center">
         <div class="bg-white text-slate-900 p-5 rounded-3xl shadow-2xl space-y-4">
-            <h2 class="text-xl font-black text-green-600 uppercase tracking-tighter text-center">Nueva Venta</h2>
+            <h2 class="text-xl font-black text-green-600 uppercase">Venta Multiequipo</h2>
             <input type="text" id="busqueda" onkeyup="buscarStock()" class="w-full border-2 p-3 rounded-xl bg-slate-50" placeholder="🔍 Buscar modelo o IMEI...">
-            <div id="listaSugerencias" class="max-h-60 overflow-y-auto rounded-xl border mt-1"></div>
-            <div id="detallesEquipo" class="p-4 bg-blue-50 text-blue-800 rounded-2xl text-sm font-bold italic">Seleccione un equipo</div>
+            <div id="listaSugerencias" class="max-h-40 overflow-y-auto rounded-xl border mt-1 text-left"></div>
+
+            <div class="text-left bg-slate-100 p-3 rounded-2xl">
+                <p class="text-[10px] font-bold text-slate-500 uppercase mb-2">Equipos seleccionados:</p>
+                <div id="carritoVenta" class="space-y-2">
+                    <p class="text-xs italic text-slate-400">Ningún equipo seleccionado...</p>
+                </div>
+            </div>
+
             <div class="flex gap-2">
-                <button onclick="setMoneda('USD')" id="btnUSD" class="flex-1 p-3 rounded-xl font-bold bg-green-600 text-white">USD $</button>
-                <button onclick="setMoneda('BS')" id="btnBS" class="flex-1 p-3 rounded-xl font-bold bg-slate-200 text-slate-600">Bs.</button>
+                <button onclick="setMoneda('USD')" id="btnUSD" class="flex-1 p-3 rounded-xl font-bold bg-green-600 text-white shadow-md">USD $</button>
+                <button onclick="setMoneda('BS')" id="btnBS" class="flex-1 p-3 rounded-xl font-bold bg-slate-200 text-slate-600 shadow-md">Bs.</button>
             </div>
-            <input type="number" id="precioVenta" oninput="calcularTotal()" class="w-full border-b-4 border-blue-600 p-4 text-3xl font-black text-center text-blue-700 outline-none" placeholder="0.00">
-            <div class="bg-slate-900 p-4 rounded-2xl flex justify-between items-center">
-                <span class="text-xs text-slate-400 font-bold uppercase">Eq. Cambio:</span>
-                <span id="labelEquivalente" class="text-yellow-400 font-bold text-lg">0.00</span>
+
+            <div class="text-left">
+                <label class="text-[10px] font-bold text-slate-400 ml-2 uppercase">Precio por Unidad:</label>
+                <input type="number" id="precioVenta" oninput="calcularTotalGlobal()" class="w-full border-b-4 border-blue-600 p-4 text-3xl font-black text-center text-blue-700 outline-none" placeholder="0.00">
             </div>
+
+            <div class="bg-slate-900 p-4 rounded-2xl flex justify-between items-center shadow-inner">
+                <span class="text-xs text-white font-bold uppercase tracking-widest">Total Venta:</span>
+                <div class="text-right">
+                    <p id="totalGlobalMostrado" class="text-yellow-400 font-bold text-xl">0.00</p>
+                    <p id="totalEquivalente" class="text-slate-400 text-[10px]">0.00 Bs.</p>
+                </div>
+            </div>
+
             <button onclick="confirmarVenta()" id="btnVenta" class="w-full bg-green-600 text-white p-5 rounded-2xl font-black shadow-lg uppercase active:scale-95 transition">Finalizar Venta</button>
-            <button onclick="location.reload()" class="w-full text-slate-400 text-xs font-bold py-2 underline">Volver al inicio</button>
+            <button onclick="location.reload()" class="w-full text-slate-400 text-xs font-bold py-2 underline">Cancelar / Volver</button>
         </div>
     </div>
 
@@ -109,7 +121,7 @@
             <h3 class="text-yellow-500 text-[10px] font-bold mb-2 uppercase">Tipo de Cambio</h3>
             <div class="flex gap-2">
                 <input type="number" id="nuevaTasa" class="bg-slate-700 p-4 rounded-2xl w-full text-white font-bold outline-none" placeholder="Ej: 12.80">
-                <button onclick="guardarTasa()" class="bg-yellow-600 px-8 rounded-2xl font-bold text-white uppercase">OK</button>
+                <button onclick="guardarTasa()" class="bg-yellow-600 px-8 rounded-2xl font-bold text-white uppercase shadow-lg">OK</button>
             </div>
         </div>
 
@@ -119,13 +131,13 @@
                 <input type="text" id="invMarca" class="p-3 rounded-xl bg-white text-sm" placeholder="Marca">
                 <input type="text" id="invModelo" class="p-3 rounded-xl bg-white text-sm" placeholder="Modelo">
                 <input type="text" id="invImei" class="p-3 rounded-xl bg-white text-sm col-span-2" placeholder="IMEI">
-                <input type="number" id="invCosto" class="p-3 rounded-xl bg-white text-sm font-semibold" placeholder="Costo $">
+                <input type="number" id="invCosto" class="p-3 rounded-xl bg-white text-sm font-semibold" placeholder="Costo Unit $">
                 <input type="number" id="invCantidad" class="p-3 rounded-xl bg-slate-200 font-bold text-center" value="1">
             </div>
             
             <div class="flex flex-col items-center gap-2">
                 <button onclick="document.getElementById('inputFoto').click()" class="w-full bg-slate-700 text-white p-4 rounded-2xl border-2 border-dashed border-slate-500 text-xs font-bold">
-                    <i class="fas fa-camera mr-2"></i> TOMAR FOTO EQUIPO
+                    <i class="fas fa-camera mr-2"></i> TOMAR FOTO DEL EQUIPO
                 </button>
                 <input type="file" id="inputFoto" accept="image/*" capture="environment" class="hidden" onchange="previsualizarFoto(this)">
                 <img id="vistaPrevia" class="hidden w-32 h-32 object-cover rounded-xl border-2 border-blue-500">
@@ -136,9 +148,10 @@
     </div>
 
     <script>
-        const urlScript = "https://script.google.com/macros/s/AKfycbznWh4cEFX1oEM3hK5Sla4GnpgUiKTy6devIF7tYTWKp1RsKaVZGVF1AaTGjbXMRPfe/exec";
+        const urlScript = "https://script.google.com/macros/s/AKfycbx4cfhoiZE7-MJpcjCTBw0LwFZ5MXYG6xiF6YWNkIbpxU5Fm1PHqOD7ojvJPAjSwNLP/exec";
         let stockReal = [];
         let monedaActual = 'USD';
+        let carrito = [];
         window.tasaGlobal = 12.50;
         let fotoBase64 = "";
 
@@ -173,16 +186,9 @@
 
         function setMoneda(m) {
             monedaActual = m;
-            document.getElementById('btnUSD').className = m === 'USD' ? 'flex-1 p-3 rounded-xl font-bold bg-green-600 text-white' : 'flex-1 p-3 rounded-xl font-bold bg-slate-200 text-slate-600';
-            document.getElementById('btnBS').className = m === 'BS' ? 'flex-1 p-3 rounded-xl font-bold bg-blue-600 text-white' : 'flex-1 p-3 rounded-xl font-bold bg-slate-200 text-slate-600';
-            calcularTotal();
-        }
-
-        function calcularTotal() {
-            const monto = document.getElementById('precioVenta').value;
-            const label = document.getElementById('labelEquivalente');
-            if(!monto) { label.innerText = "0.00"; return; }
-            label.innerText = monedaActual === 'USD' ? (monto * window.tasaGlobal).toFixed(2) + " Bs" : (monto / window.tasaGlobal).toFixed(2) + " $ USD";
+            document.getElementById('btnUSD').className = m === 'USD' ? 'flex-1 p-3 rounded-xl font-bold bg-green-600 text-white shadow-md' : 'flex-1 p-3 rounded-xl font-bold bg-slate-200 text-slate-600 shadow-md';
+            document.getElementById('btnBS').className = m === 'BS' ? 'flex-1 p-3 rounded-xl font-bold bg-blue-600 text-white shadow-md' : 'flex-1 p-3 rounded-xl font-bold bg-slate-200 text-slate-600 shadow-md';
+            calcularTotalGlobal();
         }
 
         function buscarStock() {
@@ -190,46 +196,87 @@
             const sug = document.getElementById('listaSugerencias');
             sug.innerHTML = "";
             if (busq.length < 1) return;
-            const filtrados = stockReal.filter(i => i.modelo.toLowerCase().includes(busq) || i.imei.toString().includes(busq));
+            
+            const filtrados = stockReal.filter(i => 
+                (i.modelo.toLowerCase().includes(busq) || i.imei.toString().includes(busq)) &&
+                !carrito.some(c => c.imei === i.imei)
+            );
+
             filtrados.forEach(i => {
                 const d = document.createElement('div');
-                d.className = "p-4 border-b text-slate-800 text-sm cursor-pointer hover:bg-blue-50 text-left";
+                d.className = "p-3 border-b text-slate-800 text-sm cursor-pointer hover:bg-blue-50 text-left";
                 d.innerHTML = `<b>${i.marca} ${i.modelo}</b><br><span class="text-xs text-slate-400 font-mono">IMEI: ${i.imei}</span>`;
                 d.onclick = () => {
-                    window.equipoVenta = i;
-                    document.getElementById('detallesEquipo').innerHTML = `📦 <b>${i.marca} ${i.modelo}</b><br>IMEI: ${i.imei}`;
-                    document.getElementById('busqueda').value = i.modelo;
+                    carrito.push(i);
+                    renderizarCarrito();
+                    document.getElementById('busqueda').value = "";
                     sug.innerHTML = "";
+                    calcularTotalGlobal();
                 };
                 sug.appendChild(d);
             });
         }
 
-        async function confirmarVenta() {
-            const monto = document.getElementById('precioVenta').value;
-            if(!window.equipoVenta || !monto) return alert("⚠️ Error datos");
-            const btn = document.getElementById('btnVenta');
-            btn.disabled = true; btn.innerText = "GUARDANDO...";
+        function renderizarCarrito() {
+            const contenedor = document.getElementById('carritoVenta');
+            if (carrito.length === 0) {
+                contenedor.innerHTML = `<p class="text-xs italic text-slate-400">Ningún equipo seleccionado...</p>`;
+                return;
+            }
+            contenedor.innerHTML = carrito.map((e, index) => `
+                <div class="flex justify-between items-center bg-white p-2 rounded-lg border text-xs shadow-sm text-slate-900">
+                    <span><b>${e.modelo}</b> <br> <small class="font-mono">${e.imei}</small></span>
+                    <button onclick="quitarDelCarrito(${index})" class="text-red-500 font-bold px-2 text-lg">×</button>
+                </div>
+            `).join('');
+        }
 
-            const datos = {
+        function quitarDelCarrito(index) {
+            carrito.splice(index, 1);
+            renderizarCarrito();
+            calcularTotalGlobal();
+        }
+
+        function calcularTotalGlobal() {
+            const precioUnit = parseFloat(document.getElementById('precioVenta').value) || 0;
+            const total = precioUnit * carrito.length;
+            document.getElementById('totalGlobalMostrado').innerText = total.toFixed(2) + " " + monedaActual;
+            const eq = monedaActual === 'USD' ? (total * window.tasaGlobal).toFixed(2) + " Bs" : (total / window.tasaGlobal).toFixed(2) + " $ USD";
+            document.getElementById('totalEquivalente').innerText = eq;
+        }
+
+        async function confirmarVenta() {
+            const precioUnit = parseFloat(document.getElementById('precioVenta').value);
+            if (carrito.length === 0 || !precioUnit) return alert("⚠️ Seleccione equipos y precio");
+            
+            const btn = document.getElementById('btnVenta');
+            btn.disabled = true; btn.innerText = "PROCESANDO...";
+
+            const datosEnvio = {
                 accion: "registrarVenta",
-                modelo: window.equipoVenta.modelo,
-                imei: window.equipoVenta.imei,
-                costo: window.equipoVenta.costo,
-                precioUsd: monedaActual === 'USD' ? monto : (monto / window.tasaGlobal).toFixed(2),
-                precioBs: monedaActual === 'BS' ? monto : (monto * window.tasaGlobal).toFixed(2),
+                vendedor: "Web",
                 tasaUsada: window.tasaGlobal,
-                vendedor: "Web"
+                equipos: carrito.map(e => ({
+                    modelo: e.modelo,
+                    imei: e.imei,
+                    costo: e.costo,
+                    precioUsd: monedaActual === 'USD' ? precioUnit : (precioUnit / window.tasaGlobal).toFixed(2),
+                    precioBs: monedaActual === 'BS' ? precioUnit : (precioUnit * window.tasaGlobal).toFixed(2)
+                }))
             };
 
             try {
-                document.getElementById('printFecha').innerText = new Date().toLocaleString();
-                document.getElementById('printModelo').innerText = datos.modelo;
-                document.getElementById('printImei').innerText = datos.imei;
-                document.getElementById('printMonto').innerText = monto + " " + monedaActual;
+                // Llenar ticket visual
+                document.getElementById('listaItemsVenta').innerHTML = carrito.map(e => `
+                    <div class="flex justify-between">
+                        <span><b>${e.modelo}</b><br><small>${e.imei}</small></span>
+                        <span>${precioUnit} ${monedaActual}</span>
+                    </div>
+                `).join('');
+                document.getElementById('printMonto').innerText = (precioUnit * carrito.length).toFixed(2) + " " + monedaActual;
 
-                await fetch(urlScript, { method: 'POST', body: JSON.stringify(datos) });
-                alert("✅ VENTA GUARDADA.");
+                await fetch(urlScript, { method: 'POST', body: JSON.stringify(datosEnvio) });
+                alert("✅ VENTA EXITOSA");
                 setTimeout(() => { window.print(); location.reload(); }, 500);
             } catch (e) { location.reload(); }
         }
@@ -238,20 +285,48 @@
             if(!confirm("¿Imprimir reporte y cerrar caja?")) return;
             const btn = document.getElementById('btnCierre');
             btn.disabled = true; btn.innerText = "CALCULANDO...";
-
             try {
                 const res = await fetch(urlScript + "?action=getDatosCierre");
                 const d = await res.json();
-
                 document.getElementById('cierreFechaDisplay').innerText = new Date().toLocaleString();
                 document.getElementById('cierreUsd').innerText = d.totalUsd.toFixed(2) + " $";
                 document.getElementById('cierreBs').innerText = d.totalBs.toFixed(2) + " Bs";
                 document.getElementById('cierreGanancia').innerText = d.ganancia.toFixed(2) + " $";
-
                 await fetch(urlScript, { method: 'POST', body: JSON.stringify({ accion: "cierreCaja" }) });
-                alert("✅ CIERRE GUARDADO EN DRIVE Y EXCEL.");
+                alert("✅ CIERRE GUARDADO");
                 setTimeout(() => { window.print(); location.reload(); }, 500);
             } catch (e) { alert("Error al cerrar."); btn.disabled = false; }
         }
 
-        function abrirVendedor() { document.getElementById
+        function abrirVendedor() { document.getElementById('loginScreen').classList.add('hidden'); document.getElementById('vendedorView').classList.remove('hidden'); }
+        function abrirJefe() { if(prompt("Clave:") === "1234") { document.getElementById('loginScreen').classList.add('hidden'); document.getElementById('jefeView').classList.remove('hidden'); } }
+
+        async function guardarTasa() {
+            const t = document.getElementById('nuevaTasa').value;
+            if(!t) return;
+            await fetch(urlScript, { method: 'POST', body: JSON.stringify({ accion: "actualizarTasa", tasa: t }) });
+            alert("✅ Tasa Actualizada");
+            location.reload();
+        }
+
+        async function cargarInventario() {
+            const btn = document.getElementById('btnCargar');
+            btn.disabled = true; btn.innerText = "CARGANDO...";
+            const d = {
+                accion: "cargarStock",
+                marca: document.getElementById('invMarca').value,
+                modelo: document.getElementById('invModelo').value,
+                imei: document.getElementById('invImei').value || "LOTE",
+                costo: document.getElementById('invCosto').value,
+                cantidad: document.getElementById('invCantidad').value,
+                fotoB64: fotoBase64
+            };
+            try {
+                await fetch(urlScript, { method: 'POST', body: JSON.stringify(d) });
+                alert("✅ Registrado con éxito");
+                location.reload();
+            } catch (e) { location.reload(); }
+        }
+    </script>
+</body>
+</html>
