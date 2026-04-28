@@ -136,7 +136,7 @@
     </div>
 
     <script>
-        const urlScript = "https://script.google.com/macros/s/AKfycbwlBLGIs2DHDAg3758O3Pg9KV77HEiEmK9n-624UvdFZVZBQb7KSeil9bJ_2WJXboA/exec";
+        const urlScript = "https://script.google.com/macros/s/AKfycbxGd_J3PUPm85sejg9722qG0us7_HNEX1_Q-Jqh1BMBiQm071yn2H5DfNwW9grV2CDw/exec";
         let stockReal = [];
         let monedaActual = 'USD';
         let carrito = [];
@@ -145,31 +145,32 @@
 
         window.onload = async () => {
     const status = document.getElementById('tasaDia');
-    try {
-        // Usamos un modo que permite saltar bloqueos de seguridad básicos
-        const resTasa = await fetch(urlScript + "?action=getTasa", {
-            method: 'GET',
-            mode: 'cors', // Forzamos el modo CORS
-            headers: { 'Content-Type': 'text/plain' }
-        });
-        const tasaVal = await resTasa.text();
-        
-        if (tasaVal) {
-            window.tasaGlobal = parseFloat(tasaVal) || 12.50;
-            status.innerText = "Tasa Actual: " + window.tasaGlobal + " Bs";
-            status.className = "text-green-400 mb-6 font-mono text-xs font-bold bg-green-400/10 p-2 rounded italic text-center";
-        }
+    
+    // Función para intentar conectar sin trabar la página
+    async function conectar() {
+        try {
+            // 1. Intentar traer la Tasa
+            const resTasa = await fetch(urlScript + "?action=getTasa");
+            const tasaVal = await resTasa.text();
+            if(tasaVal && !isNaN(tasaVal)) {
+                window.tasaGlobal = parseFloat(tasaVal);
+                status.innerText = "Tasa Actual: " + window.tasaGlobal + " Bs";
+                status.className = "text-green-400 mb-6 font-mono text-xs font-bold bg-green-400/10 p-2 rounded italic text-center";
+            }
 
-        const resInv = await fetch(urlScript + "?action=getInventario");
-        stockReal = await resInv.json();
-        
-        console.log("Sincronización completa");
-    } catch (e) {
-        console.error("Error detallado:", e);
-        status.innerText = "⚠️ Error: Reconectando...";
-        // Reintento automático en 3 segundos si falla
-        setTimeout(() => { location.reload(); }, 3000);
+            // 2. Intentar traer el Inventario
+            const resInv = await fetch(urlScript + "?action=getInventario");
+            const textoInv = await resInv.text();
+            stockReal = JSON.parse(textoInv);
+            console.log("Inventario cargado:", stockReal);
+            
+        } catch (e) {
+            console.error("Error de conexión:", e);
+            status.innerText = "Modo Offline (Tasa: " + window.tasaGlobal + ")";
+        }
     }
+
+    conectar();
 };
         function previsualizarFoto(input) {
             if (input.files && input.files[0]) {
